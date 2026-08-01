@@ -104,8 +104,8 @@ asimon clean --stop-ollama
 
 This stops all Ollama models, purges the system cache, and gives you a clean baseline.
 
-!!! tip "Do this before every benchmark session"
-    A single `sudo purge` before your test run eliminates the 30% swap tax. It takes 2 seconds and costs nothing.
+!!! tip "Purge before benchmarking"
+    A single `sudo purge` before a test run eliminates the 30% swap tax.
 
 ### 3. Reduce Model Footprint
 

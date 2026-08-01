@@ -130,8 +130,8 @@ Reducing context length frees KV cache memory, allowing tighter pairs to fit:
 | gemma4:26b-nvfp4 | 1.92 GB | 0.48 GB | 0.12 GB |
 | gemma4:e4b-nvfp4 | ~0.5 GB | ~0.13 GB | ~0.03 GB |
 
-!!! tip "Making DeepSeek R1 fit with a partner"
-    If you reduce DeepSeek R1's context to 32K, its KV cache drops from 40 GB to 10 GB, bringing its total budget to ~19 GB. This frees enough memory to pair it with gemma4:e4b-nvfp4 (~9 GB) for a total of ~28 GB — very comfortable.
+!!! tip "DeepSeek R1 at 32K context"
+    DeepSeek R1's KV cache drops from 40 GB to 10 GB at 32K context, bringing its total budget to ~19 GB. This pairs with gemma4:e4b-nvfp4 (~9 GB) for a total of ~28 GB.
 
 ## Running Multiple Models
 
