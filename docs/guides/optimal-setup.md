@@ -73,15 +73,15 @@ export OLLAMA_KEEP_ALIVE=0s
 
 Add it to your shell profile (`~/.zshrc` or `~/.bashrc`) to make it permanent. See the [Memory Management Guide](memory-management.md#keep_alive0s-for-burst-and-unload) for the full breakdown of when to use it and when not to.
 
-### Close Competing Apps Before Benchmarks
+### App Memory Usage
 
-Browsers and IDEs are memory hogs. Before a benchmark session, close everything except your terminal:
+Reference numbers for budgeting memory on 64 GB:
 
-- Chrome with 20+ tabs: 2–4 GB
-- VS Code with extensions: 1–2 GB
+- Chrome (20+ tabs): 2–4 GB
+- VS Code + extensions: 1–2 GB
 - Slack/Discord/Teams: 0.5–1 GB each
 
-Every GB you free reduces swap pressure. See the [Swap Impact page](../workarounds/swap-impact.md#4-close-competing-apps) for details.
+Every GB freed reduces swap pressure. Close what you don't need before benchmarking.
 
 ---
 

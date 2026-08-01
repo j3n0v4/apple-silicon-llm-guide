@@ -118,15 +118,15 @@ Smaller models are less likely to trigger swap in the first place. Quantization 
 
 See the [Quantization Guide](../benchmarks/quantization.md) for detailed comparisons.
 
-### 4. Close Competing Apps
+### 4. Reduce App Memory
 
-Browsers and IDEs are memory hogs:
+Reference numbers for 64 GB machines:
 
-- Chrome with 20+ tabs: 2–4 GB
-- VS Code with extensions: 1–2 GB
+- Chrome (20+ tabs): 2–4 GB
+- VS Code + extensions: 1–2 GB
 - Slack/Discord/Teams: 0.5–1 GB each
 
-Before a benchmark session, close everything except your terminal. Every GB you free reduces swap pressure.
+Every GB freed reduces swap pressure.
 
 ### 5. Use KEEP_ALIVE=0s
 
