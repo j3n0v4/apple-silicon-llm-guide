@@ -16,7 +16,7 @@ Benchmark data for all models tested on the MacBook Pro M1 Max (64 GB) — see t
 | gemma4:12b-nvfp4 | 28.7 tok/s | 9/10 | 7.7 GB | ~1.5 GB | 2.1s | ~9.2 GB |
 | deepseek-r1:14b | 22.2 tok/s | **10/10** | 9.0 GB | 40 GB | 2.79s | ~49 GB |
 
-!!! info "Reading the table"
+!!! info "Table columns"
     - **Throughput:** Tokens per second during generation (prefill excluded). Higher is better.
     - **Quality:** Subjective quality score (1–10) based on reasoning, coherence, and instruction following.
     - **Disk Size:** Model file size on disk in the stated quantization.

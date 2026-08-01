@@ -166,8 +166,8 @@ macmon
 
 ## Automated Solution: swap-guard
 
-!!! tip "The Permanent Fix"
-    Install once, forget about it. swap-guard monitors swap every 60 seconds and auto-purges when stale swap exceeds 1 GB. No manual `sudo purge` needed.
+!!! tip "Automated swap management"
+    swap-guard monitors swap every 60 seconds and auto-purges when stale swap exceeds 1 GB. No manual `sudo purge` needed.
 
 ### The Problem with Manual Purge
 

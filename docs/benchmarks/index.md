@@ -50,4 +50,4 @@ The following diagram shows how the benchmark testbed is organized:
 All benchmarks were run on the test machine described in the [Methodology](methodology.md) page. See that page for the complete hardware configuration, software versions, and measurement approach.
 
 !!! tip "Scaling to other hardware"
-    M1/M2/M3/M4 Max and Pro chips see proportionally lower throughput based on GPU core count and memory bandwidth. Use the [Model Selection Guide](../guides/model-selection.md) to scale expectations for your hardware.
+    Throughput scales proportionally with GPU core count and memory bandwidth across M1/M2/M3/M4 Max and Pro chips. See the [Model Selection Guide](../guides/model-selection.md) for per-chip estimates.
