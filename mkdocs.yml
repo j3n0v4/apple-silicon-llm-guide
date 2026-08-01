@@ -1,9 +1,8 @@
-# Apple Silicon LLM Guide — MkDocs Configuration
 site_name: Apple Silicon LLM Guide
-site_description: A community guide for running large language models on Apple Silicon (M1/M2/M3/M4) — benchmarks, setup guides, architecture patterns, and known workarounds.
-site_author: Community Contributors
+site_description: Benchmarks, setup guides, architecture patterns, and workarounds for running large language models on Apple Silicon (M1/M2/M3/M4).
+site_author: j3n0v4
 site_url: https://j3n0v4.github.io/apple-silicon-llm-guide
-repo_url: https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide
+repo_url: https://github.com/j3n0v4/apple-silicon-llm-guide
 repo_name: apple-silicon-llm-guide
 edit_uri: edit/main/docs/
 
@@ -73,21 +72,14 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide
+      link: https://github.com/j3n0v4/apple-silicon-llm-guide
     - icon: fontawesome/brands/reddit
       link: https://reddit.com/r/LocalLLaMA
   generator: false
-  consent:
-    title: Cookie Consent
-    description: >-
-      This site uses no cookies, analytics, or tracking. It is a static
-      documentation site hosted on GitHub Pages.
 
 copyright: >
   This work is licensed under
   <a href="https://opensource.org/licenses/MIT">MIT</a>.
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> and
-  <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>.
 
 plugins:
   - search
@@ -113,9 +105,11 @@ nav:
     - MLX Setup: guides/mlx-setup.md
     - Open WebUI: guides/open-webui.md
     - Model Selection: guides/model-selection.md
+    - Optimal Setup: guides/optimal-setup.md
     - Memory Management: guides/memory-management.md
   - Workarounds:
     - /no_think Bug: workarounds/no-think-bug.md
+    - Swap Impact: workarounds/swap-impact.md
     - Context Length Footgun: workarounds/context-length.md
     - Thinking Models: workarounds/thinking-models.md
     - Flash Attention: workarounds/flash-attention.md

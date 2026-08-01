@@ -2,9 +2,7 @@
 
 This page documents how all benchmarks in this guide were conducted — the test battery, measurement approach, hardware configuration, and scripts used. Follow these instructions to reproduce the results on your own machine.
 
-> **Verified on:** MacBook Pro M1 Max (64 GB), macOS 26.6 (Tahoe). I'll keep benchmarks updated as new models land — verify on your system if you're on a different macOS version.
-
-> **Footnote on "abliterated":** Throughout this guide, "abliterated" refers to models that have had their refusal training removed for unrestricted experimentation. This is a community term for models modified to remove safety guardrails.
+> **Verified on:** MacBook Pro M1 Max (64 GB), macOS 26.6 (Tahoe).
 
 ## Hardware Configuration
 

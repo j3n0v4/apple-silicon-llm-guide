@@ -106,7 +106,6 @@ These publishers provide pre-quantized models optimized for Apple Silicon:
 
 | Publisher | Hugging Face | Description |
 |---|---|---|
-| **richardyoung**
 | **mannix** | [https://huggingface.co/mannix](https://huggingface.co/mannix) | GGUF quantized models with detailed benchmark notes. |
 | **charaf** | [https://huggingface.co/charaf](https://huggingface.co/charaf) | MLX community model conversions and fine-tuned variants. |
 | **Nous Research** | [https://huggingface.co/NousResearch](https://huggingface.co/NousResearch) | Open-source model development — Hermes series, fine-tuned variants. |
@@ -222,7 +221,7 @@ workflows:
 Found a broken link, missing resource, or new benchmark site? Open an issue or
 pull request on GitHub:
 
-[https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide](https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide)
+[https://github.com/j3n0v4/apple-silicon-llm-guide](https://github.com/j3n0v4/apple-silicon-llm-guide)
 
 ---
 

@@ -4,8 +4,6 @@
 
 A head-to-head comparison of the three major MLX inference engines running the **same model** (Qwen 3.6 35B-A3B-abliterated, 4bit-MLX quantization) on the same hardware.
 
-> **Footnote on "abliterated":** "Abliterated" models have had their refusal training removed for unrestricted experimentation. This is a community modification that removes safety guardrails from the model.
-
 ## Test Setup
 
 - **Model:** Qwen 3.6 35B-A3B-abliterated (4bit-MLX)

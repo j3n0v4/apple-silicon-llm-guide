@@ -4,7 +4,7 @@
 
 ## Run LLMs on Your Mac — Fast, Local, and Free
 
-A community-curated reference for running large language models on Apple Silicon
+A reference for running large language models on Apple Silicon
 (M1, M2, M3, M4). I bought a MacBook Pro M1 Max and wanted to find the best
 local LLM setup for the hardware — this guide shares what I learned along the way.
 
@@ -99,7 +99,7 @@ ollama run gemma4:26b-nvfp4                        # Start chatting
 
 ## Hardware Note
 
-> **Tested on:** MacBook Pro M1 Max (64 GB). See the [Methodology page](benchmarks/methodology.md) for full hardware specs and measurement approach. Results scale to other M-series chips by memory bandwidth and GPU core count. I'll keep this guide updated as new models and quantizations become available.
+> **Tested on:** MacBook Pro M1 Max (64 GB). See the [Methodology page](benchmarks/methodology.md) for full hardware specs and measurement approach. Results scale to other M-series chips by memory bandwidth and GPU core count.
 
 ---
 
@@ -133,6 +133,7 @@ Performance data covering:
 ### 🐛 Workarounds
 
 - **`/no_think` bug** — Fix for models that get stuck in thinking mode.
+- **Swap impact** — Stale swap costs 30%+ tok/s. How to detect, purge, and prevent it.
 - **Context length footgun** — Why your model slows down and how to fix it.
 - **Thinking models** — Running DeepSeek R1, QwQ, and other reasoning models.
 - **Flash attention** — Enabling and tuning flash attention on Apple Silicon.
@@ -151,16 +152,16 @@ Performance data covering:
 
 All benchmarks and instructions in this guide were tested on this exact machine. See the [Benchmark Methodology](benchmarks/methodology.md) page for the complete hardware configuration, software versions, and measurement approach.
 
-> **Compatibility:** Results scale to other M-series chips by memory bandwidth and GPU core count. M2/M3/M4 chips with equivalent or better specs will match or exceed these numbers. I'll update this guide as new models and quantizations land — verify on your system if you're on a different macOS version.
+> **Compatibility:** Results scale to other M-series chips by memory bandwidth and GPU core count. M2/M3/M4 chips with equivalent or better specs will match or exceed these numbers.
 
 ---
 
 ## Community
 
-This guide is maintained by the community at
+This guide is maintained at
 [r/LocalLLaMA](https://reddit.com/r/LocalLLaMA). Contributions, corrections,
 and new benchmark data are always welcome.
 
-- **GitHub**: [apple-silicon-llm-guide](https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide)
+- **GitHub**: [j3n0v4/apple-silicon-llm-guide](https://github.com/j3n0v4/apple-silicon-llm-guide)
 - **Reddit**: [r/LocalLLaMA](https://reddit.com/r/LocalLLaMA)
 - **License**: MIT — free to use, share, and contribute to.

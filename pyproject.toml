@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "apple-silicon-llm-guide"
 version = "1.0.0"
-description = "A community guide for running large language models on Apple Silicon"
+description = "Benchmarks, setup guides, and workarounds for running LLMs on Apple Silicon"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
@@ -22,8 +22,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://apple-silicon-llm-guide.github.io"
-Repository = "https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide"
+Homepage = "https://j3n0v4.github.io/apple-silicon-llm-guide"
+Repository = "https://github.com/j3n0v4/apple-silicon-llm-guide"
 
 [project.optional-dependencies]
 dev = [

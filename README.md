@@ -29,6 +29,22 @@ ollama run gemma4:e4b-nvfp4
 
 That's it. You're running a local LLM on Apple Silicon.
 
+For the complete best configuration — GPU memory limit, swap-guard, model picks, co-residence pairs, context tuning, and a one-shot setup script — see the [Optimal Setup Guide](docs/guides/optimal-setup.md).
+
+### Swap Management
+
+Stale swap from previous model runs costs **28–31% tok/s** on small models — even with 40 GB of free RAM. macOS doesn't reclaim swap after models unload.
+
+The permanent fix: install **swap-guard**, a launchd agent that monitors swap every 60 seconds and auto-purges when stale swap exceeds 1 GB:
+
+```bash
+cd scripts/
+chmod +x install-swap-guard.sh
+./install-swap-guard.sh
+```
+
+See the [Swap Impact page](docs/workarounds/swap-impact.md#automated-solution-swap-guard) for full details, or use `sudo purge` manually for one-off cleanup.
+
 Read the full guide at [j3n0v4.github.io/apple-silicon-llm-guide](https://j3n0v4.github.io/apple-silicon-llm-guide/) for benchmarks, MLX setup, workarounds, and quantization comparisons.
 
 ---
@@ -68,6 +84,7 @@ I benchmarked 9 models across 5 quantization formats on M1 Max 64 GB. Here's wha
 
 - **Benchmarks** — Token-generation speeds for dozens of model/quantization combos, with MLX engine comparisons and cold-start timing.
 - **Setup Guides** — Apple Silicon-specific config for Ollama, MLX, Open WebUI, and more. No generic Linux instructions.
+- **Optimal Setup** — The complete best configuration for M1 Max 64 GB: GPU limit, swap-guard, model picks, co-residence pairs, and a one-shot setup script.
 - **Architecture Patterns** — How to burst inference on local hardware and manage memory efficiently. Apple Silicon's unified memory is shared by CPU and GPU — great for bandwidth, but everything competes for the same pool.
 - **Workarounds** — Real bugs I hit: the `/no_think` bug, context-length footguns, thinking-model quirks, flash attention tuning, and why speculative decoding isn't worth it on this hardware.
 - **Quantization** — Practical guidance on GGUF, NVFP4, MXFP8, Q4_K_M, and other formats. Which ones actually matter on Apple Silicon.
@@ -87,19 +104,6 @@ All benchmarks and instructions were tested on:
 | **OS** | macOS 26.6 (Tahoe) |
 
 Results scale to other M-series chips by memory bandwidth and GPU core count. I'll keep this guide updated as new models and quantizations become available.
-
----
-
-## Local Development
-
-```bash
-pip install -e ".[dev]"
-mkdocs serve      # live-reload dev server
-mkdocs build      # static site
-mkdocs gh-deploy  # deploy to GitHub Pages
-```
-
-Or use the Makefile: `make install`, `make serve`, `make build`, `make deploy`.
 
 ---
 

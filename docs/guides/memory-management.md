@@ -271,17 +271,18 @@ sudo powermetrics --samplers mem_pressure -i 2000 -n 5
 | **Pressure: 60-80%** | High pressure | System is swapping |
 | **Pressure: 80-100%** | Critical | Close apps, unload models immediately |
 
-### Swap Monitoring
+### Swap Impact on Performance
+
+Stale swap from previous model runs costs **28–31% tok/s on small models** — even when you have plenty of free RAM. macOS doesn't reclaim swap after models unload, so yesterday's model run can silently degrade today's inference.
 
 ```bash
-# Check swap usage
+# Quick swap check
 sysctl vm.swapusage
-
-# Monitor swap activity
-sudo fs_usage -w -f filesys | grep -E "swap|vm_compressor"
 ```
 
-**Heavy swapping** (> 4 GB) destroys inference performance. If you see swap usage, you need a smaller model or higher quantization.
+If swap is above 1 GB and you haven't loaded a large model, you have stale swap. Use `macmon --once` for a fuller picture.
+
+[Full analysis and fixes →](../workarounds/swap-impact.md)
 
 ## Next Steps
 

@@ -2,8 +2,6 @@
 
 > **🏆 Recommendation:** Use **NVFP4** as your default — best quality-to-speed tradeoff, MLX-native, fastest cold start. Use **Q4_K_M** if you're on Ollama (it's the default GGUF quant). Use **Q8_0** only when quality is critical and you have memory to spare.
 
-> **Footnote on "abliterated":** "Abliterated" models have had their refusal training removed for unrestricted experimentation. This is a community modification that removes safety guardrails from the model.
-
 Quantization reduces model precision to fit in memory and improve throughput. This guide compares all major quantization formats available on Apple Silicon.
 
 ## Quantization Formats Overview
