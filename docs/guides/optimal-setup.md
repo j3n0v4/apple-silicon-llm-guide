@@ -73,16 +73,6 @@ export OLLAMA_KEEP_ALIVE=0s
 
 Add it to your shell profile (`~/.zshrc` or `~/.bashrc`) to make it permanent. See the [Memory Management Guide](memory-management.md#keep_alive0s-for-burst-and-unload) for the full breakdown of when to use it and when not to.
 
-### App Memory Usage
-
-Reference numbers for budgeting memory on 64 GB:
-
-- Chrome (20+ tabs): 2–4 GB
-- VS Code + extensions: 1–2 GB
-- Slack/Discord/Teams: 0.5–1 GB each
-
-Every GB freed reduces swap pressure. Close what you don't need before benchmarking.
-
 ---
 
 ## Model Selection
