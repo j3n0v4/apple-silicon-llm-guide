@@ -1,0 +1,126 @@
+# Apple Silicon LLM Guide — MkDocs Configuration
+site_name: Apple Silicon LLM Guide
+site_description: A community guide for running large language models on Apple Silicon (M1/M2/M3/M4) — benchmarks, setup guides, architecture patterns, and known workarounds.
+site_author: Community Contributors
+site_url: https://j3n0v4.github.io/apple-silicon-llm-guide
+repo_url: https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide
+repo_name: apple-silicon-llm-guide
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+    admonition:
+      note: octicons/tag-16
+      tip: octicons/light-bulb-16
+      warning: octicons/alert-16
+      danger: octicons/flame-16
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - tables
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/apple-silicon-llm-guide/apple-silicon-llm-guide
+    - icon: fontawesome/brands/reddit
+      link: https://reddit.com/r/LocalLLaMA
+  generator: false
+  consent:
+    title: Cookie Consent
+    description: >-
+      This site uses no cookies, analytics, or tracking. It is a static
+      documentation site hosted on GitHub Pages.
+
+copyright: >
+  This work is licensed under
+  <a href="https://opensource.org/licenses/MIT">MIT</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> and
+  <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>.
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enabled: !ENV [CI, false]
+      fallback_to_build_date: true
+  - minify:
+      minify_html: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Benchmarks:
+    - Overview: benchmarks/index.md
+    - Model Comparison: benchmarks/model-comparison.md
+    - MLX Engines: benchmarks/mlx-engines.md
+    - Quantization Guide: benchmarks/quantization.md
+    - Co-Residence Guide: benchmarks/co-residence.md
+    - Tool Calling: benchmarks/tool-calling.md
+    - Methodology: benchmarks/methodology.md
+  - Guides:
+    - Ollama Setup: guides/ollama-setup.md
+    - MLX Setup: guides/mlx-setup.md
+    - Open WebUI: guides/open-webui.md
+    - Model Selection: guides/model-selection.md
+    - Memory Management: guides/memory-management.md
+  - Workarounds:
+    - /no_think Bug: workarounds/no-think-bug.md
+    - Context Length Footgun: workarounds/context-length.md
+    - Thinking Models: workarounds/thinking-models.md
+    - Flash Attention: workarounds/flash-attention.md
+    - Speculative Decoding: workarounds/speculative-decoding.md
+  - Architecture:
+    - Burst & Unload: architecture/burst-unload.md
+    - Serving Comparison: architecture/serving-comparison.md
+  - References: references.md
