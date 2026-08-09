@@ -1,18 +1,18 @@
 # Ollama Setup Guide
 
-Ollama is the most popular way to run LLMs locally on Apple Silicon. It wraps llama.cpp with a clean CLI and an OpenAI-compatible REST API, using Metal GPU acceleration out of the box.
+Ollama is the most popular way to run LLMs locally on Apple silicon. It wraps llama.cpp with a clean CLI and an OpenAI-compatible REST API, using Metal GPU acceleration out of the box.
 
 > **Basic installation, model pulling, API usage, and Modelfiles are covered by Ollama's own docs.**
-> This guide only covers what's **different or specific to Apple Silicon**.
+> This page only covers what is **different or specific to Apple silicon**.
 
 - **Installation**: See [ollama.com](https://ollama.com) for the macOS app or `brew install ollama`.
 - **Pulling models**: See [ollama.com/library](https://ollama.com/library) for available models.
 - **API reference**: See the [Ollama API docs](https://github.com/ollama/ollama?tab=readme-ov-file#api).
 - **Modelfiles**: See the [Ollama Modelfile docs](https://github.com/ollama/ollama?tab=readme-ov-file#modelfile).
 
-## Environment Variables (Apple Silicon Performance Tuning)
+## Environment variables (Apple silicon performance tuning)
 
-Ollama respects several environment variables that matter for Apple Silicon performance:
+Ollama respects several environment variables that matter for Apple silicon performance:
 
 ```bash
 # Prevent models from staying in memory after use
@@ -55,9 +55,9 @@ source ~/.zshrc
 | `OLLAMA_ORIGINS` | `*` | — | CORS origins for web apps. |
 | `OLLAMA_DEBUG` | — | — | Enable debug logging. |
 
-## Dual-Stack Architecture
+## Dual-stack architecture
 
-Ollama on Apple Silicon uses a **dual-stack** approach depending on the model format:
+Ollama on Apple silicon uses a **dual-stack** approach depending on the model format:
 
 ### GGUF → llama.cpp → Metal
 
@@ -69,13 +69,13 @@ Most Ollama models use the GGUF format, which runs through llama.cpp with Metal 
 
 ### Safetensors/NVFP4 → MLX Engine
 
-Newer models (tagged `nvfp4`, `bf16`) use Apple's MLX framework directly. This path is optimized for Apple Silicon's unified memory architecture.
+Newer models (tagged `nvfp4`, `bf16`) use Apple's MLX framework directly. This path is optimized for Apple silicon unified memory architecture.
 
-- **Pros**: Native Apple Silicon optimization, supports Safetensors format
+- **Pros**: Native Apple silicon optimization, supports Safetensors format
 - **Cons**: Fewer models available, newer codebase
 - **GPU**: Direct Metal compute via MLX
 
-Ollama auto-detects the model format and selects the appropriate engine. You don't need to configure anything — just pull the right tag.
+Ollama auto-detects the model format and selects the appropriate engine. No configuration needed — just pull the right tag.
 
 ## Troubleshooting (macOS-Specific)
 
@@ -128,7 +128,7 @@ export OLLAMA_KEEP_ALIVE=0s
 export OLLAMA_KV_CACHE_TYPE=q8_0
 
 # Use a smaller model or higher quantization
-ollama pull gemma4:2b-nvfp4
+ollama pull gemma4:e2b-nvfp4
 ```
 
 ### Metal errors on startup
@@ -141,7 +141,7 @@ sw_vers
 rm -rf ~/Library/Application\ Support/Ollama/cache/
 ```
 
-## Next Steps
+## Next steps
 
 - [MLX Setup](mlx-setup.md) — Running models via Apple's MLX framework
 - [Open WebUI](open-webui.md) — A web interface for your local models

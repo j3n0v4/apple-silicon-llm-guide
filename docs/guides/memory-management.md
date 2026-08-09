@@ -1,12 +1,11 @@
 # Memory Management Guide
 
-Apple Silicon's unified memory is shared by CPU and GPU — great for bandwidth, but everything competes for the same pool. Memory is the bottleneck. Here's how to manage it.
+Apple silicon unified memory is shared by CPU and GPU — great for bandwidth, but everything competes for the same pool. Memory is the bottleneck. Here is how to manage it.
 
-## Apple Silicon Unified Memory Architecture
+## Apple silicon unified memory architecture
 
-Unlike traditional computers with separate CPU RAM and GPU VRAM, Apple Silicon uses a **unified memory pool** shared by the CPU, GPU, Neural Engine, and other coprocessors.
+Unlike traditional computers with separate CPU RAM and GPU VRAM, Apple silicon uses a **unified memory pool** shared by the CPU, GPU, Neural Engine, and other coprocessors.
 
-![Apple Silicon Unified Memory Architecture](../assets/images/memory-architecture.svg)
 
 ### Key Properties
 
@@ -26,7 +25,7 @@ The unified architecture means **everything competes for the same memory**:
 - The KV cache during generation
 - Other GPU workloads
 
-## GPU Memory Limit
+## GPU memory limit
 
 macOS enforces a soft limit on GPU-addressable memory via the `iogpu.wired_limit_mb` sysctl.
 
@@ -74,13 +73,13 @@ echo "iogpu.wired_limit_mb=57344" | sudo tee -a /etc/sysctl.conf
 | 128 GB | 57,344 MB | 96,000 MB |
 | 192 GB | 57,344 MB | 128,000 MB |
 
-## KV Cache Calculation
+## KV cache calculation
 
 The KV cache stores key-value pairs from previous tokens during generation. It grows linearly with context length.
 
 ### Formula
 
-```
+```text
 KV Cache (bytes) = context_length × num_layers × kv_heads × head_dim × bytes_per_element × 2
 ```
 
@@ -94,7 +93,7 @@ Where:
 
 ### Simplified Formula
 
-```
+```text
 KV Cache (GB) = context_length × num_layers × kv_heads × 128 × bytes_per_element × 2 / 1,073,741,824
 ```
 
@@ -135,19 +134,19 @@ for name, layers, kv_heads, head_dim in models:
 
 ### Context Window Impact
 
-| Context Length | KV Cache (9B, Q8) | KV Cache (26B, Q8) | KV Cache (70B, Q8) |
-|----------------|------------------|-------------------|-------------------|
-| 1,024 | 0.08 GB | 0.24 GB | 0.15 GB |
-| 4,096 | 0.33 GB | 0.95 GB | 0.61 GB |
-| 8,192 | 0.66 GB | 1.90 GB | 1.22 GB |
-| 16,384 | 1.31 GB | 3.79 GB | 2.44 GB |
-| 32,768 | 2.62 GB | 7.58 GB | 4.88 GB |
-| 65,536 | 5.24 GB | 15.16 GB | 9.77 GB |
-| 131,072 | 10.49 GB | 30.33 GB | 19.53 GB |
+| Context Length | KV Cache (9B, Q8) | KV Cache (26B, sliding window) | KV Cache (70B, Q8) |
+|----------------|------------------|--------------------------------|-------------------|
+| 1,024 | 0.08 GB | ~0.02 GB | 0.15 GB |
+| 4,096 | 0.33 GB | ~0.06 GB | 0.61 GB |
+| 8,192 | 0.66 GB | ~0.12 GB | 1.22 GB |
+| 16,384 | 1.31 GB | ~0.24 GB | 2.44 GB |
+| 32,768 | 2.62 GB | ~0.48 GB | 4.88 GB |
+| 65,536 | 5.24 GB | ~0.96 GB | 9.77 GB |
+| 131,072 | 10.49 GB | ~1.92 GB | 19.53 GB |
 
-**KV cache reality**: At 128K context, the KV cache alone can exceed the model weights in memory usage. This is why flash attention and KV cache quantization are critical for long-context work.
+**KV cache reality**: At 128K context, the KV cache alone can exceed the model weights in memory usage for dense-attention models. Gemma 4 26B uses a sliding window (only 5 full-attention layers), so its KV cache stays small even at 128K. This is why flash attention and KV cache quantization are critical for long-context work with dense models.
 
-## KEEP_ALIVE=0s for Burst-and-Unload
+## KEEP_ALIVE=0s for burst-and-unload
 
 The `OLLAMA_KEEP_ALIVE=0s` setting is the top memory optimization.
 
@@ -189,7 +188,7 @@ export OLLAMA_KEEP_ALIVE=30s
 export OLLAMA_KEEP_ALIVE=2m
 ```
 
-## OLLAMA_MAX_LOADED_MODELS Tuning
+## OLLAMA_MAX_LOADED_MODELS tuning
 
 Controls how many models can be loaded simultaneously.
 
@@ -211,7 +210,7 @@ export OLLAMA_MAX_LOADED_MODELS=2
 
 When a new model is requested and the limit is reached, Ollama unloads the least recently used model. This is automatic — no manual management needed.
 
-## Memory Pressure Monitoring
+## Memory pressure monitoring
 
 ### Using memory_pressure (built-in)
 
@@ -229,7 +228,7 @@ done
 
 ### Using macmon (recommended)
 
-[macmon](https://github.com/vladkens/macmon) provides detailed Apple Silicon thermal and memory monitoring:
+[macmon](https://github.com/vladkens/macmon) provides detailed Apple silicon thermal and memory monitoring:
 
 ```bash
 # Install
@@ -273,18 +272,18 @@ sudo powermetrics --samplers mem_pressure -i 2000 -n 5
 
 ### Swap Impact on Performance
 
-Stale swap from previous model runs costs **28–31% tok/s on small models** — even when you have plenty of free RAM. macOS doesn't reclaim swap after models unload, so yesterday's model run can silently degrade today's inference.
+Stale swap from previous model runs costs **28–31% tok/s on small models** — even when you have plenty of free RAM. macOS does not reclaim swap after models unload, so yesterday's model run can silently degrade today's inference.
 
 ```bash
 # Quick swap check
 sysctl vm.swapusage
 ```
 
-If swap is above 1 GB and you haven't loaded a large model, you have stale swap. Use `macmon --once` for a fuller picture.
+If swap is above 1 GB and you have not loaded a large model, you have stale swap. Use `macmon --once` for a fuller picture.
 
 [Full analysis and fixes →](../workarounds/swap-impact.md)
 
-## Next Steps
+## Next steps
 
 - [Model Selection](model-selection.md) — Choose the right model for your RAM
 - [Ollama Setup](ollama-setup.md) — Configure Ollama with optimal memory settings

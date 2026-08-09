@@ -1,6 +1,6 @@
 site_name: Apple Silicon LLM Guide
 site_description: Benchmarks, setup guides, architecture patterns, and workarounds for running large language models on Apple Silicon (M1/M2/M3/M4).
-site_author: j3n0v4
+site_author: JD Cordero
 site_url: https://j3n0v4.github.io/apple-silicon-llm-guide
 repo_url: https://github.com/j3n0v4/apple-silicon-llm-guide
 repo_name: apple-silicon-llm-guide
@@ -41,11 +41,7 @@ theme:
 
 markdown_extensions:
   - admonition
-  - attr_list
-  - def_list
-  - footnotes
   - md_in_html
-  - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -53,14 +49,8 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-  - pymdownx.inlinehilite
   - pymdownx.keys
-  - pymdownx.snippets
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
@@ -78,7 +68,7 @@ extra:
   generator: false
 
 copyright: >
-  This work is licensed under
+  Copyright JD Cordero. Licensed under
   <a href="https://opensource.org/licenses/MIT">MIT</a>.
 
 plugins:

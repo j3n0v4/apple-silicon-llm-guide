@@ -9,7 +9,7 @@ description = "Benchmarks, setup guides, and workarounds for running LLMs on App
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Apple Silicon LLM Guide Contributors"},
+    {name = "JD Cordero"},
 ]
 keywords = ["apple-silicon", "llm", "machine-learning", "mlx", "ollama", "documentation"]
 classifiers = [

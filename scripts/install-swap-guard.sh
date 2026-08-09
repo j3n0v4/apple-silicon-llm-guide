@@ -18,9 +18,9 @@ set -o errexit
 # --- Configuration -----------------------------------------------------------
 
 SCRIPT_SRC="./swap-guard.sh"
-PLIST_SRC="./com.vltx.swap-guard.plist"
+PLIST_SRC="./com.local.swap-guard.plist"
 SCRIPT_DST="/usr/local/bin/swap-guard"
-PLIST_DST="${HOME}/Library/LaunchAgents/com.vltx.swap-guard.plist"
+PLIST_DST="${HOME}/Library/LaunchAgents/com.local.swap-guard.plist"
 SUDOERS_FILE="/etc/sudoers.d/swap-guard"
 LOG_FILE="/tmp/swap-guard.log"
 
@@ -111,10 +111,10 @@ if [ "${ACTION}" = "uninstall" ]; then
     info "Removed log files"
 
     # Verify uninstall
-    if ! launchctl list | grep -q "com.vltx.swap-guard" 2>/dev/null; then
+    if ! launchctl list | grep -q "com.local.swap-guard" 2>/dev/null; then
         info "swap-guard is no longer running"
     else
-        warn "swap-guard may still be loaded — try: launchctl remove com.vltx.swap-guard"
+        warn "swap-guard may still be loaded — try: launchctl remove com.local.swap-guard"
     fi
 
     header "Uninstall complete"
@@ -207,7 +207,7 @@ info "LaunchAgent loaded"
 header "Verifying installation"
 
 # Check if the agent is running
-if launchctl list | grep -q "com.vltx.swap-guard"; then
+if launchctl list | grep -q "com.local.swap-guard"; then
     info "swap-guard is running as a launchd agent"
 else
     warn "swap-guard not found in launchctl list — check logs at ${LOG_FILE}"

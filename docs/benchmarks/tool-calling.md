@@ -1,21 +1,21 @@
 # Tool Calling Compatibility
 
-Function calling (tool calling) is a core requirement for agentic workflows. This page documents which models support tool calling on Apple Silicon and to what extent.
+Function calling (tool calling) is a core requirement for agentic workflows. This page documents which models support tool calling on Apple silicon and to what extent.
 
-## Compatibility Matrix
+## Compatibility matrix
 
 | Model | Single Tool Call | Parallel Tool Calls | `tool_choice:required` | Notes |
 |-------|:----------------:|:-------------------:|:---------------------:|-------|
-| qwen3-coder:30b | ✅ | ✅ | ✅ | Best overall tool calling |
-| qwen3.6:35b-a3b-nvfp4 | ✅ | ✅ | ✅ | Strong MoE tool calling |
-| qwen3.6:35b-a3b-coding-nvfp4 | ✅ | ✅ | ✅ | Coding-tuned MoE |
-| gemma4:26b-nvfp4 | ✅ | ✅ | ✅ | Excellent tool calling |
-| gemma4:e4b-nvfp4 | ✅ | ✅ | ✅ | Good tool calling |
-| gemma4:e2b-nvfp4 | ✅ | ✅ | ✅ | Fast tool calling |
-| gemma4:12b-nvfp4 | ✅ | ✅ | ✅ | Capable tool calling |
-| deepseek-r1:14b | ✅ | ❌ | ❌ | Single tool only, no parallel |
+| qwen3-coder:30b | Yes | Yes | Yes | Best overall tool calling |
+| qwen3.6:35b-a3b-nvfp4 | Yes | Yes | Yes | Strong MoE tool calling |
+| qwen3.6:35b-a3b-coding-nvfp4 | Yes | Yes | Yes | Coding-tuned MoE |
+| gemma4:26b-nvfp4 | Yes | Yes | Yes | Excellent tool calling |
+| gemma4:e4b-nvfp4 | Yes | Yes | Yes | Good tool calling |
+| gemma4:e2b-nvfp4 | Yes | Yes | Yes | Fast tool calling |
+| gemma4:12b-nvfp4 | Yes | Yes | Yes | Capable tool calling |
+| deepseek-r1:14b | Yes | No | No | Single tool only, no parallel |
 
-## Detailed Results
+## Detailed results
 
 ### Single Tool Call
 
@@ -39,27 +39,27 @@ Parallel tool calling allows the model to call multiple functions in a single re
 
 | Model | Parallel Support | Max Parallel Calls | Reliability |
 |-------|:---------------:|:------------------:|:-----------:|
-| qwen3-coder:30b | ✅ | 5+ | Excellent |
-| qwen3.6:35b-a3b-nvfp4 | ✅ | 5+ | Excellent |
-| gemma4:26b-nvfp4 | ✅ | 5+ | Excellent |
-| gemma4:e4b-nvfp4 | ✅ | 3-5 | Good |
-| gemma4:e2b-nvfp4 | ✅ | 3 | Good |
-| deepseek-r1:14b | ❌ | 0 | N/A — returns single call only |
+| qwen3-coder:30b | Yes | 5+ | Excellent |
+| qwen3.6:35b-a3b-nvfp4 | Yes | 5+ | Excellent |
+| gemma4:26b-nvfp4 | Yes | 5+ | Excellent |
+| gemma4:e4b-nvfp4 | Yes | 3-5 | Good |
+| gemma4:e2b-nvfp4 | Yes | 3 | Good |
+| deepseek-r1:14b | No | 0 | N/A — returns single call only |
 
 ### `tool_choice:required`
 
-This parameter forces the model to always return a tool call, even if it would prefer to answer directly. You need this for agent loops where every response must be routed through a function.
+This parameter forces the model to always return a tool call, even if it would prefer to answer directly. Required for agent loops where every response must be routed through a function.
 
 | Model | Support | Behavior |
 |-------|:-------:|----------|
-| qwen3-coder:30b | ✅ | Reliable — always returns a tool call |
-| qwen3.6:35b-a3b-nvfp4 | ✅ | Reliable |
-| gemma4:26b-nvfp4 | ✅ | Reliable |
-| gemma4:e4b-nvfp4 | ✅ | Reliable |
-| gemma4:e2b-nvfp4 | ✅ | Reliable |
-| deepseek-r1:14b | ❌ | May return text instead of tool call |
+| qwen3-coder:30b | Yes | Reliable — always returns a tool call |
+| qwen3.6:35b-a3b-nvfp4 | Yes | Reliable |
+| gemma4:26b-nvfp4 | Yes | Reliable |
+| gemma4:e4b-nvfp4 | Yes | Reliable |
+| gemma4:e2b-nvfp4 | Yes | Reliable |
+| deepseek-r1:14b | No | May return text instead of tool call |
 
-## DeepSeek R1 Limitations
+## DeepSeek R1 limitations
 
 DeepSeek R1 14B has significant tool calling limitations due to its thinking/reasoning architecture:
 
@@ -70,7 +70,7 @@ DeepSeek R1 14B has significant tool calling limitations due to its thinking/rea
 
 **Workaround:** Use DeepSeek R1 for reasoning tasks only, and route tool calling to a different model (e.g., gemma4:e4b-nvfp4) in a multi-model setup.
 
-## Tool Calling by Use Case
+## Tool calling by use case
 
 ### Simple Function Calls
 
@@ -145,7 +145,7 @@ response = client.chat.completions.create(
 | **Reasoning + tools** | gemma4:26b-nvfp4 | Deep reasoning with full tool support |
 | **Thinking-only** | deepseek-r1:14b | Use for reasoning, route tools elsewhere |
 
-## Testing Your Model's Tool Calling
+## Testing your model's tool calling
 
 ```python
 import ollama
@@ -174,7 +174,7 @@ print(response.message.tool_calls)
 # Expected: [{'function': {'name': 'get_weather', 'arguments': {'location': 'Tokyo'}}}]
 ```
 
-## Known Issues
+## Known issues
 
 1. **DeepSeek R1 malformed JSON:** The thinking tokens leak into the tool call JSON. Workaround: use a regex to extract the JSON from the response.
 2. **Gemma 4 e2b parallel limit:** The smallest Gemma 4 variant drops parallel calls beyond 3. Use e4b or larger for reliable parallel calling.

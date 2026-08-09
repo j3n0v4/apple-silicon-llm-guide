@@ -1,10 +1,10 @@
 # MLX Engine Comparison
 
-> **🏆 Recommendation:** Use **oMLX** for interactive work (chat, agents, RAG) — its 5x faster prefill makes it feel dramatically snappier. Use **Rapid-MLX** for long-form generation (batch processing, document writing). Use **mlx_lm** as the stable fallback.
+> **Recommendation:** Use **oMLX** for interactive work (chat, agents, RAG) — its 5x faster prefill makes it feel dramatically snappier. Use **Rapid-MLX** for long-form generation (batch processing, document writing). Use **mlx_lm** as the stable fallback.
 
 A head-to-head comparison of the three major MLX inference engines running the **same model** (Qwen 3.6 35B-A3B-abliterated, 4bit-MLX quantization) on the same hardware.
 
-## Test Setup
+## Test setup
 
 - **Model:** Qwen 3.6 35B-A3B-abliterated (4bit-MLX)
 - **Hardware:** MacBook Pro M1 Max (64 GB)
@@ -12,7 +12,7 @@ A head-to-head comparison of the three major MLX inference engines running the *
 - **Generation:** 512 tokens
 - **Measurement:** Each engine tested 5 times, median reported
 
-## Overall Results
+## Overall results
 
 | Metric | mlx_lm | Rapid-MLX | oMLX |
 |--------|--------|-----------|------|
@@ -23,16 +23,14 @@ A head-to-head comparison of the three major MLX inference engines running the *
 | **API Compatibility** | OpenAI-compatible | OpenAI-compatible | OpenAI-compatible |
 | **Installation** | `pip install mlx-lm` | `pip install rapid-mlx` | `pip install omlx` |
 
-![MLX Engine Performance Comparison](../assets/images/mlx-engine-comparison.svg)
 
 !!! warning "Effective throughput vs generation throughput"
-    **Generation throughput** (gen tok/s) measures tokens/second during the generation phase only — after prefill is complete. **Effective throughput** (eff tok/s) measures total tokens (prefill + generation) divided by total time. A high prefill overhead can make a fast generator feel slow in practice.
+    **Generation throughput** (gen tok/s) measures tokens per second during the generation phase only — after prefill is complete. **Effective throughput** (eff tok/s) measures total tokens (prefill + generation) divided by total time. A high prefill overhead can make a fast generator feel slow in practice.
 
-## Per-Turn Breakdown
+## Per-turn breakdown
 
 The following table shows how each engine performs across a typical interaction lifecycle:
 
-![MLX Engine Timing Breakdown](../assets/images/mlx-engine-timeline.svg)
 
 | Phase | mlx_lm | Rapid-MLX | oMLX |
 |-------|--------|-----------|------|
@@ -40,7 +38,7 @@ The following table shows how each engine performs across a typical interaction 
 | **Generation (512 tokens)** | ~14s | ~10s | ~13s |
 | **Total wall time** | ~30s | ~38s | **~16s** |
 
-## When to Use Each Engine
+## When to use each engine
 
 ### mlx_lm — The Balanced Choice
 
@@ -95,7 +93,7 @@ pip install omlx
 omlx serve --model Qwen3.5-35B-A3B-abliterated-4bit
 ```
 
-## Decision Matrix
+## Decision matrix
 
 | Your Workload | Recommended Engine | Why |
 |---------------|-------------------|-----|
@@ -107,7 +105,7 @@ omlx serve --model Qwen3.5-35B-A3B-abliterated-4bit
 | Development / testing | **mlx_lm** | Most stable, best documented |
 | Production serving | **mlx_lm or oMLX** | Both are stable; oMLX if latency matters |
 
-## API Overhead Comparison
+## API overhead comparison
 
 All three engines provide OpenAI-compatible APIs. The overhead of `/v1/chat/completions` vs `/api/generate` is consistent across engines at **33–37%**:
 
@@ -117,18 +115,18 @@ All three engines provide OpenAI-compatible APIs. The overhead of `/v1/chat/comp
 | Rapid-MLX | 51.4 tok/s | ~33 tok/s | ~36% |
 | oMLX | 39.16 tok/s | ~26 tok/s | ~34% |
 
-## Installation Comparison
+## Installation comparison
 
 | Aspect | mlx_lm | Rapid-MLX | oMLX |
 |--------|--------|-----------|------|
 | Package | `mlx-lm` | `rapid-mlx` | `omlx` |
 | Dependencies | mlx, numpy | mlx, numpy, fastapi | mlx, numpy, fastapi |
 | Python version | 3.10+ | 3.10+ | 3.10+ |
-| Apple Silicon | Required | Required | Required |
+| Apple silicon | Required | Required | Required |
 | GPU support | Automatic (MLX) | Automatic (MLX) | Automatic (MLX) |
 | Documentation | Excellent | Good | Good |
 | GitHub stars | 10k+ | ~2k | ~1k |
 
 ## Recommendation
 
-**Start with oMLX** for interactive use cases — its prefill performance makes it feel dramatically faster in practice. Switch to **Rapid-MLX** if you're doing long-form generation. Use **mlx_lm** as the stable fallback if you encounter issues with either alternative.
+**Start with oMLX** for interactive use cases — its prefill performance makes it feel dramatically faster in practice. Switch to **Rapid-MLX** if you are doing long-form generation. Use **mlx_lm** as the stable fallback if you encounter issues with either alternative.

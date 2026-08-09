@@ -4,7 +4,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.vltx.swap-guard</string>
+    <string>com.local.swap-guard</string>
 
     <key>ProgramArguments</key>
     <array>

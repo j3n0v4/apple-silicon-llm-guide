@@ -4,14 +4,14 @@
 
 ## TL;DR
 
-Here's the complete optimal configuration for M1 Max 64 GB. Run the [setup script](#the-complete-setup-script) at the bottom of this page to do it all at once.
+Here is the complete optimal configuration for M1 Max 64 GB. Run the [setup script](#the-complete-setup-script) at the bottom of this page to do it all at once.
 
 ### Recommended Models
 
 | Model | Pull Command | Speed | RAM Budget | Best For |
 |-------|-------------|-------|-----------|----------|
 | `gemma4:e4b-nvfp4` | `ollama pull gemma4:e4b-nvfp4` | 60 tok/s | ~9.3 GB | **Daily driver** — fast, small, pairs with anything |
-| `qwen3-coder:30b` | `ollama pull qwen3-coder:30b` | 56 tok/s | ~21 GB | **Coding** — best tool calling, 10/10 quality |
+| `qwen3-coder:30b` | `ollama pull qwen3-coder:30b` | 56 tok/s | ~33 GB | **Coding** — best tool calling, 10/10 quality |
 | `deepseek-r1:14b` | `ollama pull deepseek-r1:14b` | 22 tok/s | ~49 GB | **Reasoning** — chain-of-thought, but watch the KV cache |
 | `gemma4:e2b-nvfp4` | `ollama pull gemma4:e2b-nvfp4` | 93 tok/s | ~6.8 GB | **Maximum speed** — fastest model tested |
 | `qwen3.6:35b-a3b-nvfp4` | `ollama pull qwen3.6:35b-a3b-nvfp4` | 54 tok/s | ~22 GB | **MoE efficiency** — 35B params, only 3B active |
@@ -31,7 +31,7 @@ export OLLAMA_KEEP_ALIVE=0s
 
 ---
 
-## System Configuration
+## System configuration
 
 These are one-time changes. Do them once and forget about them.
 
@@ -53,7 +53,7 @@ See the [Memory Management Guide](memory-management.md#raising-the-gpu-memory-li
 
 ### Install swap-guard
 
-Stale swap from previous model runs costs **28–31% tok/s on small models** — even when you have 40 GB of free RAM. macOS doesn't reclaim swap after models unload. swap-guard is a launchd agent that monitors swap every 60 seconds and auto-purges when stale swap exceeds 1 GB.
+Stale swap from previous model runs costs **28–31% tok/s on small models** — even when you have 40 GB of free RAM. macOS does not reclaim swap after models unload. swap-guard is a launchd agent that monitors swap every 60 seconds and auto-purges when stale swap exceeds 1 GB.
 
 ```bash
 cd scripts/
@@ -65,7 +65,7 @@ See the [Swap Impact page](../workarounds/swap-impact.md#automated-solution-swap
 
 ### Set KEEP_ALIVE=0s
 
-By default, Ollama keeps models loaded for 5 minutes after the last request. That's 9+ GB of memory sitting idle. `KEEP_ALIVE=0s` unloads the model immediately after the response is complete:
+By default, Ollama keeps models loaded for 5 minutes after the last request. That is 9+ GB of memory sitting idle. `KEEP_ALIVE=0s` unloads the model immediately after the response is complete:
 
 ```bash
 export OLLAMA_KEEP_ALIVE=0s
@@ -75,15 +75,15 @@ Add it to your shell profile (`~/.zshrc` or `~/.bashrc`) to make it permanent. S
 
 ---
 
-## Model Selection
+## Model selection
 
-These are the five models I recommend for M1 Max 64 GB, ordered by use case. All data is from my [Model Comparison benchmarks](../benchmarks/model-comparison.md).
+These are the five recommended models for M1 Max 64 GB, ordered by use case. All data is from my [Model Comparison benchmarks](../benchmarks/model-comparison.md).
 
 ### Daily Driver: `gemma4:e4b-nvfp4`
 
 **60.4 tok/s, ~9.3 GB budget, 2.0s cold start**
 
-This is the model I use most. It's fast enough for interactive chat, small enough to pair with any other model, and has excellent quality (8/10). The NVFP4 quantization keeps the file size at 8.8 GB while maintaining good fidelity.
+This is the most versatile model. It is fast enough for interactive chat, small enough to pair with any other model, and has excellent quality (8/10). The NVFP4 quantization keeps the file size at 8.8 GB while maintaining good fidelity.
 
 ```bash
 ollama pull gemma4:e4b-nvfp4
@@ -91,9 +91,9 @@ ollama pull gemma4:e4b-nvfp4
 
 ### Coding: `qwen3-coder:30b`
 
-**55.7 tok/s, ~21 GB budget, 7.8s cold start**
+**55.7 tok/s, ~33 GB budget, 7.8s cold start**
 
-The best coding model I've tested. 10/10 quality for code generation, best tool calling support of any model on Apple Silicon. The cold start is slow (7.8s), but once loaded it generates at 56 tok/s.
+The best coding model I have tested. 10/10 quality for code generation, best tool calling support of any model on Apple silicon. The cold start is slow (7.8s), but once loaded it generates at 56 tok/s.
 
 ```bash
 ollama pull qwen3-coder:30b
@@ -103,7 +103,7 @@ ollama pull qwen3-coder:30b
 
 **22.2 tok/s, ~49 GB budget, 2.79s cold start**
 
-10/10 quality for chain-of-thought reasoning, but there's a catch: the model itself is only 9 GB, but its KV cache at 128K context is **40 GB**. That brings the total to ~49 GB — nearly filling the machine. If you reduce context to 32K, the KV cache drops to 10 GB and the total falls to ~19 GB.
+10/10 quality for chain-of-thought reasoning, but there is a catch: the model itself is only 9 GB, but its KV cache at 128K context is **40 GB**. That brings the total to ~49 GB — nearly filling the machine. If you reduce context to 32K, the KV cache drops to 10 GB and the total falls to ~19 GB.
 
 ```bash
 ollama pull deepseek-r1:14b
@@ -115,7 +115,7 @@ See the [Context Length Footgun](../workarounds/context-length.md) page for the 
 
 **93.1 tok/s, ~6.8 GB budget, 1.51s cold start**
 
-The fastest model I've tested. Tiny footprint, instant cold start. Great for high-throughput tasks, summarization, or when you just want a snappy chat experience. Quality is 9/10 — surprisingly good for its size.
+The fastest model I have tested. Tiny footprint, instant cold start. Great for high-throughput tasks, summarization, or when you just want a snappy chat experience. Quality is 9/10 — surprisingly good for its size.
 
 ```bash
 ollama pull gemma4:e2b-nvfp4
@@ -125,7 +125,7 @@ ollama pull gemma4:e2b-nvfp4
 
 **54.3 tok/s, ~22 GB budget, 5.0s cold start**
 
-35 billion total parameters, but only **3 billion active** per token. This means it runs nearly as fast as a 3B model while delivering quality closer to a 35B model. The MoE architecture is the best quality-to-speed ratio on Apple Silicon.
+35 billion total parameters, but only **3 billion active** per token. This means it runs nearly as fast as a 3B model while delivering quality closer to a 35B model. The MoE architecture is the best quality-to-speed ratio on Apple silicon.
 
 ```bash
 ollama pull qwen3.6:35b-a3b-nvfp4
@@ -133,7 +133,7 @@ ollama pull qwen3.6:35b-a3b-nvfp4
 
 ---
 
-## Co-Residence Config
+## Co-residence config
 
 Running two models simultaneously lets you specialize: use a fast model for simple queries and a powerful model for complex reasoning.
 
@@ -144,19 +144,19 @@ Running two models simultaneously lets you specialize: use a fast model for simp
 | Model | Budget |
 |-------|--------|
 | gemma4:e4b-nvfp4 | ~9.3 GB |
-| qwen3-coder:30b | ~21 GB |
-| **Total** | **~30 GB** |
-| **Headroom** | **25 GB** |
+| qwen3-coder:30b | ~33 GB |
+| **Total** | **~42 GB** |
+| **Headroom** | **13 GB** |
 
-That's 30 GB for models, leaving 25 GB for macOS and other apps. This is the ultimate combo: fast general chat + excellent coding.
+That is 42 GB for models, leaving 13 GB for macOS and other apps. This is the ultimate combo: fast general chat + excellent coding.
 
 ### What NOT to Pair
 
-DeepSeek R1 14B is the pairing challenge. Its 40 GB KV cache at 128K context means it can't share memory with any other large model:
+DeepSeek R1 14B is the pairing challenge. Its 40 GB KV cache at 128K context means it cannot share memory with any other large model:
 
 | Pair | Total | Why |
 |------|-------|-----|
-| deepseek-r1:14b + qwen3-coder:30b | ~70 GB | Exceeds 64 GB by 6 GB |
+| deepseek-r1:14b + qwen3-coder:30b | ~82 GB | Exceeds 64 GB by 18 GB |
 | deepseek-r1:14b + gemma4:26b-nvfp4 | ~68 GB | Exceeds 64 GB by 4 GB |
 | deepseek-r1:14b + qwen3.6:35b-a3b-nvfp4 | ~71 GB | Exceeds 64 GB by 7 GB |
 
@@ -176,17 +176,17 @@ See the [Burst & Unload pattern](../architecture/burst-unload.md) for the full t
 
 ---
 
-## Serving Engine Choice
+## Serving engine choice
 
 ### Ollama for Daily Use
 
-Ollama is my default. It's the simplest setup, has the best model management (`ollama pull` / `ollama run`), native tool calling, and built-in OpenAI-compatible API. It also supports `KEEP_ALIVE` for burst-and-unload and multi-model setups.
+Ollama is my default. It is the simplest setup, has the best model management (`ollama pull` / `ollama run`), native tool calling, and built-in OpenAI-compatible API. It also supports `KEEP_ALIVE` for burst-and-unload and multi-model setups.
 
 **Ollama 0.19+ uses MLX for safetensors models automatically** — so you get MLX-level performance without the Python setup.
 
 ### MLX (Rapid-MLX) for Max Throughput
 
-If I need every last token per second on a single model, I switch to MLX. Rapid-MLX generates at **51.4 tok/s** on a 35B MoE model — 38% faster than mlx_lm. But it has a high prefill overhead (~28s for 2K tokens), so it's only worth it for long-form generation.
+For maximum token throughput on a single model, switch to MLX. Rapid-MLX generates at **51.4 tok/s** on a 35B MoE model — 38% faster than mlx_lm. But it has a high prefill overhead (~28s for 2K tokens), so it is only worth it for long-form generation.
 
 For interactive work, **oMLX** is the better MLX choice — its prefill is 5x faster than Rapid-MLX.
 
@@ -194,25 +194,25 @@ See the [MLX Engine Comparison](../benchmarks/mlx-engines.md) for the full head-
 
 ---
 
-## Context Length Tuning
+## Context length tuning
 
-Don't use 128K context unless you actually need it. Context length is the biggest hidden memory cost.
+Avoid 128K context unless you actually need it. Context length is the biggest hidden memory cost.
 
 ### Context Cost Table
 
 | Context | KV Cache (9B) | KV Cache (26B) | KV Cache (30B coder) | KV Cache (R1 14B) |
 |---------|---------------|---------------|---------------------|-------------------|
-| 4,096 | 0.33 GB | 0.95 GB | 0.5 GB | 1.25 GB |
-| 8,192 | 0.66 GB | 1.90 GB | 0.19 GB | 2.5 GB |
-| 16,384 | 1.31 GB | 3.79 GB | 0.38 GB | 5 GB |
-| 32,768 | 2.62 GB | 7.58 GB | 0.75 GB | 10 GB |
-| 131,072 | 10.49 GB | 30.33 GB | 3.0 GB | 40 GB |
+| 4,096 | 0.33 GB | ~0.06 GB | 0.5 GB | 1.25 GB |
+| 8,192 | 0.66 GB | ~0.12 GB | 1.0 GB | 2.5 GB |
+| 16,384 | 1.31 GB | ~0.24 GB | 2.0 GB | 5 GB |
+| 32,768 | 2.62 GB | ~0.48 GB | 3.8 GB | 10 GB |
+| 131,072 | 10.49 GB | ~1.92 GB | 15.2 GB | 40 GB |
 
 ### Recommended Defaults
 
 | Model | Recommended Context | Why |
 |-------|-------------------|-----|
-| `gemma4:e4b-nvfp4` | 8,192 | Fast chat doesn't need long context |
+| `gemma4:e4b-nvfp4` | 8,192 | Fast chat does not need long context |
 | `gemma4:e2b-nvfp4` | 4,096 | Speed-focused, short queries |
 | `qwen3-coder:30b` | 32,768 | Code needs moderate context |
 | `deepseek-r1:14b` | 8,192–32,768 | 128K costs 40 GB in KV cache alone |
@@ -224,7 +224,7 @@ See the [Context Length Footgun](../workarounds/context-length.md) page for the 
 
 ## Monitoring
 
-Keep an eye on your system while running models. Here are the three commands I use most:
+Keep an eye on your system while running models. Here are the three most-used commands:
 
 ### macmon — Thermal + Memory Overview
 
@@ -241,7 +241,7 @@ Shows CPU/GPU power, thermal pressure, memory pressure, and fan speed. Install w
 sysctl vm.swapusage
 ```
 
-Look for `total = X.XX GB`. If it's above 1 GB and you haven't loaded a large model, you have stale swap. See the [Swap Impact page](../workarounds/swap-impact.md#quick-check) for the full story.
+Look for `total = X.XX GB`. If it is above 1 GB and no large model is loaded, you have stale swap. See the [Swap Impact page](../workarounds/swap-impact.md#quick-check) for the full story.
 
 ### System Memory Pressure
 
@@ -253,7 +253,7 @@ If you see `Pressure: 30%+` or `State: WK` (wakeup), the system is actively mana
 
 ---
 
-## The Complete Setup Script
+## The complete setup script
 
 Run this once on a fresh machine. It does everything: installs Ollama, configures the system, pulls the recommended models, and verifies everything works.
 
@@ -356,10 +356,10 @@ echo "See https://j3n0v4.github.io/apple-silicon-llm-guide/guides/optimal-setup/
 
 ---
 
-## What's Next
+## What's next
 
 - [Model Selection Guide](model-selection.md) — Choose models for your RAM tier
 - [Memory Management](memory-management.md) — Deep dive into unified memory and KV cache
 - [Ollama Setup](ollama-setup.md) — Full Ollama configuration reference
-- [MLX Setup](mlx-setup.md) — Set up MLX for native Apple Silicon performance
+- [MLX Setup](mlx-setup.md) — Set up MLX for native Apple silicon performance
 - [Open WebUI](open-webui.md) — Web interface for your models

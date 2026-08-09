@@ -4,7 +4,7 @@
 
 Modern LLMs with chain-of-thought reasoning (Gemma4, Qwen3.6, DeepSeek-R1) expose a `reasoning_effort` parameter that controls how much thinking the model does before answering. Get this wrong and your API returns empty responses.
 
-## The Short Version
+## The short version
 
 | Model | `reasoning_effort` Value | Notes |
 |-------|-------------------------|-------|
@@ -16,7 +16,7 @@ Modern LLMs with chain-of-thought reasoning (Gemma4, Qwen3.6, DeepSeek-R1) expos
 | `deepseek-r1:32b` | `low` | Same as 14b variant |
 | `deepseek-r1:70b` | `low` | Same as 14b variant |
 
-## DeepSeek-R1: The Special Case
+## DeepSeek-R1: the special case
 
 DeepSeek-R1 is unique among thinking models. It **requires** `reasoning_effort=low` — setting it to `none` produces empty content, just like the `/no_think` bug.
 
@@ -42,9 +42,9 @@ curl -X POST http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-## MLX: No `reasoning_effort` Support
+## MLX: no `reasoning_effort` support
 
-The MLX inference stack (`mlx_lm`, `oMLX`, `Rapid-MLX`) does **not** support the `reasoning_effort` parameter at all. If you're running models through MLX, you cannot suppress thinking output through the API.
+The MLX inference stack (`mlx_lm`, `oMLX`, `Rapid-MLX`) does **not** support the `reasoning_effort` parameter at all. If you are running models through MLX, you cannot suppress thinking output through the API.
 
 ```bash
 # MLX — reasoning_effort is silently ignored
@@ -59,7 +59,7 @@ mlx_lm.generate \
 2. Post-process the output to strip thinking blocks
 3. Switch to Ollama for the API features
 
-## Qwen3.6 Chat Template Bugs
+## Qwen3.6 chat template bugs
 
 Qwen3.6 has several known issues with its chat template that affect reliability:
 
@@ -67,7 +67,7 @@ Qwen3.6 has several known issues with its chat template that affect reliability:
 
 The Qwen3.6 chat template uses a Jinja2 `|items` filter that is not supported by the minijinja C++ runtime used by llama.cpp and Ollama. This causes a template rendering crash:
 
-```
+```text
 Error: template error: filter 'items' not found
 ```
 
@@ -75,7 +75,7 @@ Error: template error: filter 'items' not found
 
 ### 2. `|safe` Filter is Python-Only
 
-The `|safe` Jinja2 filter is only available in Python's Jinja2 implementation. C++ runtimes (llama.cpp, Ollama) don't support it, causing template rendering failures.
+The `|safe` Jinja2 filter is only available in Python's Jinja2 implementation. C++ runtimes (llama.cpp, Ollama) do not support it, causing template rendering failures.
 
 ### 3. Developer Role Missing
 
@@ -89,7 +89,7 @@ When thinking is suppressed, the template still generates empty `<think></think>
 
 The model sometimes generates a closing `</thinking>` tag without an opening `<thinking>` tag, or generates multiple thinking blocks. This is a training artifact, not a template issue, but it interacts badly with parsers that expect well-formed thinking blocks.
 
-## Fixed Chat Template
+## Fixed chat template
 
 A community-maintained fixed chat template is available on HuggingFace that addresses all of these issues:
 
@@ -111,7 +111,7 @@ The fixed template:
 - Suppresses empty thinking blocks when `reasoning_effort=none`
 - Handles malformed thinking tag sequences
 
-## Code Examples
+## Code examples
 
 ### Python: Correct Usage for All Models
 
@@ -122,11 +122,11 @@ client = openai.OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 
 def get_response(model: str, prompt: str, reasoning_effort: str = "none"):
     """Get a response with proper reasoning_effort handling."""
-    
+
     # DeepSeek-R1 needs low instead of none
     if "deepseek" in model and reasoning_effort == "none":
         reasoning_effort = "low"
-    
+
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
@@ -155,9 +155,9 @@ MODELS=(
 for entry in "${MODELS[@]}"; do
   IFS=':' read -r model tag effort <<< "$entry"
   full_model="${model}:${tag}"
-  
+
   echo "=== Testing $full_model (reasoning_effort=$effort) ==="
-  
+
   content=$(curl -s http://localhost:11434/v1/chat/completions \
     -H "Content-Type: application/json" \
     -d "{
@@ -165,11 +165,11 @@ for entry in "${MODELS[@]}"; do
       \"messages\": [{\"role\": \"user\", \"content\": \"Say exactly: OK\"}],
       \"reasoning_effort\": \"$effort\"
     }" | jq -r '.choices[0].message.content // "EMPTY"')
-  
+
   if [ "$content" = "EMPTY" ] || [ -z "$content" ]; then
-    echo "  ❌ FAIL: Empty content"
+    echo "  FAIL: Empty content"
   else
-    echo "  ✅ PASS: $content"
+    echo "  PASS: $content"
   fi
 done
 ```

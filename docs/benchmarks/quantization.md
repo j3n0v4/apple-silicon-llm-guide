@@ -1,10 +1,10 @@
 # Quantization Guide
 
-> **🏆 Recommendation:** Use **NVFP4** as your default — best quality-to-speed tradeoff, MLX-native, fastest cold start. Use **Q4_K_M** if you're on Ollama (it's the default GGUF quant). Use **Q8_0** only when quality is critical and you have memory to spare.
+> **Recommendation:** Use **NVFP4** as your default — best quality-to-speed tradeoff, MLX-native, fastest cold start. Use **Q4_K_M** if you are on Ollama (it is the default GGUF quant). Use **Q8_0** only when quality is critical and you have memory to spare.
 
-Quantization reduces model precision to fit in memory and improve throughput. This guide compares all major quantization formats available on Apple Silicon.
+Quantization reduces model precision to fit in memory and improve throughput. This page compares all major quantization formats available on Apple Silicon.
 
-## Quantization Formats Overview
+## Quantization formats overview
 
 | Format | Framework | Bits | Type | Perplexity | Speed | File Size |
 |--------|-----------|------|------|-----------|-------|-----------|
@@ -15,11 +15,10 @@ Quantization reduces model precision to fit in memory and improve throughput. Th
 | **Q4_K_M** | llama.cpp | 4-bit | K-quant | 18.36 | Fast | Small |
 | **Q8_0** | llama.cpp | 8-bit | Block quant | ~17.6 | Moderate | Large |
 
-## Perplexity Comparison
+## Perplexity comparison
 
 Perplexity (lower is better) measured on a held-out validation set, with BF16 as the baseline:
 
-![Perplexity by Quantization Format](../assets/images/perplexity-by-quantization.svg)
 
 | Format | Perplexity | vs BF16 | Quality Impact |
 |--------|-----------|---------|----------------|
@@ -31,9 +30,8 @@ Perplexity (lower is better) measured on a held-out validation set, with BF16 as
 | MXFP4 | ~18.0 | +0.46 | Minimal |
 | Q4_K_M | 18.36 | +0.82 | Noticeable |
 
-## Speed Comparison
+## Speed comparison
 
-![Quantization Format Speed Comparison](../assets/images/quantization-speed-comparison.svg)
 
 ### Small Models (< 12B params)
 
@@ -43,7 +41,7 @@ Perplexity (lower is better) measured on a held-out validation set, with BF16 as
 | MXFP8 | 63.0 tok/s | 3.0s |
 | MXFP4 | ~55 tok/s | ~3.5s |
 
-For small models, **MXFP8 is actually faster than NVFP4** — the extra precision doesn't cost much on small parameter counts.
+For small models, **MXFP8 is actually faster than NVFP4** — the extra precision does not cost much on small parameter counts.
 
 ### Large Models (≥ 12B params)
 
@@ -55,7 +53,7 @@ For small models, **MXFP8 is actually faster than NVFP4** — the extra precisio
 
 For large models, **NVFP4 is the clear winner** — MXFP8's higher precision comes with a significant speed penalty.
 
-## File Size Comparison
+## File size comparison
 
 | Format | gemma4:e4b (8B) | gemma4:26b (26B) | qwen3-coder:30b (30B) |
 |--------|-----------------|------------------|----------------------|
@@ -69,7 +67,7 @@ For large models, **NVFP4 is the clear winner** — MXFP8's higher precision com
 !!! note "llama.cpp vs MLX file sizes"
     llama.cpp's Q4_K_M produces smaller files than MLX's NVFP4 because it uses a different quantization scheme. However, NVFP4 has better perplexity (17.95 vs 18.36) and runs natively on MLX without conversion overhead.
 
-## When to Use Each Format
+## When to use each format
 
 ### NVFP4 — Recommended Default
 
@@ -154,9 +152,8 @@ ollama pull gemma4:e4b-q4_K_M
 ollama pull gemma4:e4b-q8_0
 ```
 
-## Quantization Decision Flowchart
+## Quantization decision flowchart
 
-![Quantization Decision Flowchart](../assets/images/quantization-decision-flowchart.svg)
 
 ## Summary
 

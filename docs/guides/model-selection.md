@@ -1,10 +1,10 @@
 # Model Selection Guide
 
-> **Tested hardware:** MacBook Pro M1 Max (64 GB) — see the [Benchmark Methodology](../benchmarks/methodology.md) for the complete hardware configuration. All benchmark data in this guide was measured on this exact machine. The 128 GB+ tier recommends models that **don't fit in 64 GB** — these are based on community reports, not my testing. Results scale to other M-series chips by memory bandwidth and GPU core count.
+> **Tested hardware:** MacBook Pro M1 Max (64 GB) — see the [Benchmark Methodology](../benchmarks/methodology.md) for the complete hardware configuration. All benchmark data in this project was measured on this exact machine. The 128 GB+ tier recommends models that **do not fit in 64 GB** — these are based on community reports, not my testing. Results scale to other M-series chips by memory bandwidth and GPU core count.
 
-Choosing the right model depends on your available RAM. Use this guide to pick the right model for your hardware.
+Choosing the right model depends on your available RAM. Use this project to pick the right model for your hardware.
 
-## RAM Tiers
+## RAM tiers
 
 | RAM | Typical Macs | What You Can Run |
 |-----|-------------|-----------------|
@@ -14,7 +14,7 @@ Choosing the right model depends on your available RAM. Use this guide to pick t
 | **64 GB** | M1/M2/M3/M4 Max/Ultra | 30B-70B models, large MoE models |
 | **128 GB+** | M2/M4 Ultra | 70B-120B models, multiple models |
 
-## Model Size Categories
+## Model size categories
 
 ### By Parameter Count
 
@@ -40,19 +40,19 @@ MoE models have **active parameters** (used per token) and **total parameters** 
 
 **MoE advantage**: MoE models give you the capability of a large model with the speed of a small one. The 30B-A3B model (30B total, 3B active) runs nearly as fast as a 3B model while delivering quality closer to a 30B model.
 
-## KV Cache Memory Calculation
+## KV cache memory calculation
 
 The KV cache is the hidden state stored during generation. It grows with context length and is a major memory consumer.
 
 ### Formula
 
-```
+```text
 KV Cache Size = context_length × num_layers × kv_heads × head_dim × bytes_per_element × 2 (K + V)
 ```
 
 For Q8_0 quantization (1 byte per element):
 
-```
+```text
 KV Cache (GB) = context_length × num_layers × kv_heads × head_dim × 2 / 1,073,741,824
 ```
 
@@ -73,7 +73,7 @@ KV Cache (GB) = context_length × num_layers × kv_heads × head_dim × 2 / 1,07
 - **Long context (32-128K)**: KV cache dominates memory (2-16 GB)
 - **Extreme context (1M+)**: Requires flash attention and aggressive quantization
 
-## Quantization Impact on Memory
+## Quantization impact on memory
 
 See the [Quantization Guide](../benchmarks/quantization.md) for a complete comparison of all formats including perplexity, speed, and file size.
 
@@ -96,9 +96,9 @@ See the [Quantization Guide](../benchmarks/quantization.md) for a complete compa
 | Q4_K_M | 5 GB | 0.3 GB | 5.3 GB |
 | Q4_0 | 4.5 GB | 0.3 GB | 4.8 GB |
 
-## Recommended Models Per RAM Tier
+## Recommended models per RAM tier
 
-> **Benchmarked tier:** MacBook Pro M1 Max (64 GB). All models that fit in ≤64 GB RAM have verified performance data. The 128 GB+ tier is unbenchmarked — models there need more RAM than I have.
+> **Benchmarked tier:** MacBook Pro M1 Max (64 GB). All models that fit in ≤64 GB RAM have verified performance data. The 128 GB+ tier is unbenchmarked — models there need more RAM than the test machine has.
 
 ### 8 GB RAM
 
@@ -143,7 +143,7 @@ See the [Quantization Guide](../benchmarks/quantization.md) for a complete compa
 
 ### 128 GB+ RAM (M2/M4 Ultra — Not Benchmarked)
 
-> **Note:** I only have benchmark data for M1 Max 64GB. The following recommendations are based on memory calculations and community reports, not my own testing.
+> **Note:** Benchmark data covers the M1 Max 64 GB only. The following recommendations are based on memory calculations and community reports, not direct testing on other hardware.
 >
 > **Sources:** [CraftRigs M-series benchmarks](https://craftrigs.com), [WillItRun.AI](https://willitrunai.com), [r/LocalLLaMA community reports](https://reddit.com/r/LocalLLaMA)
 
@@ -154,9 +154,9 @@ See the [Quantization Guide](../benchmarks/quantization.md) for a complete compa
 | Qwen 3 235B-A14B | Q4_K_M | GGUF/MLX | Frontier-level |
 | Multiple models | Various | Any | Run 2-3 models simultaneously |
 
-## Decision Tree
+## Decision tree
 
-```
+```text
 How much RAM do you have?
 │
 ├─ 8 GB
@@ -184,9 +184,9 @@ How much RAM do you have?
     └─ Multi-model? → Run 2-3 models simultaneously
 ```
 
-## Quick Selection by Use Case
+## Quick selection by use case
 
-> **⚡** = Unbenchmarked (models need >64 GB RAM). **64 GB** rows and below are backed by my [verified benchmarks](../benchmarks/model-comparison.md).
+> **†** = Unbenchmarked (models need >64 GB RAM). **64 GB** rows and below are backed by my [verified benchmarks](../benchmarks/model-comparison.md).
 
 ### Coding
 
@@ -196,9 +196,9 @@ How much RAM do you have?
 | 16 GB | Qwen 3 Coder 7B (Q8_0) or 14B-A3B (Q4_K_M) |
 | 32 GB | Qwen 3 Coder 14B-A3B (Q8_0) or 30B-A3B (Q4_K_M) |
 | 64 GB | Qwen 3 Coder 30B-A3B (Q8_0) |
-| 128 GB+ ⚡ | Qwen 3 Coder 30B-A3B (BF16) |
+| 128 GB+ † | Qwen 3 Coder 30B-A3B (BF16) |
 
-Sources for ⚡ recommendations: [CraftRigs](https://craftrigs.com), [WillItRun.AI](https://willitrunai.com), [r/LocalLLaMA](https://reddit.com/r/LocalLLaMA)
+Sources for † recommendations: [CraftRigs](https://craftrigs.com), [WillItRun.AI](https://willitrunai.com), [r/LocalLLaMA](https://reddit.com/r/LocalLLaMA)
 
 ### General Purpose / Chat
 
@@ -208,7 +208,7 @@ Sources for ⚡ recommendations: [CraftRigs](https://craftrigs.com), [WillItRun.
 | 16 GB | Gemma 4 9B (Q4_K_M) |
 | 32 GB | Qwen 3 30B-A3B (Q4_K_M) |
 | 64 GB | Gemma 4 26B (Q8_0) |
-| 128 GB+ ⚡ | Qwen 3 72B-A14B (Q8_0) |
+| 128 GB+ † | Qwen 3 72B-A14B (Q8_0) |
 
 ### Reasoning / Analysis
 
@@ -218,10 +218,10 @@ Sources for ⚡ recommendations: [CraftRigs](https://craftrigs.com), [WillItRun.
 | 16 GB | DeepSeek R1 14B (Q4_K_M) |
 | 32 GB | Gemma 4 26B (Q4_K_M) |
 | 64 GB | Gemma 4 26B (Q8_0) or DeepSeek R1 32B (Q4_K_M) |
-| 128 GB+ ⚡ | Qwen 3 235B-A14B (Q4_K_M) |
+| 128 GB+ † | Qwen 3 235B-A14B (Q4_K_M) |
 
-## Next Steps
+## Next steps
 
 - [Memory Management](memory-management.md) — Deep dive into unified memory and KV cache
 - [Ollama Setup](ollama-setup.md) — Install and configure Ollama
-- [MLX Setup](mlx-setup.md) — Set up MLX for native Apple Silicon performance
+- [MLX Setup](mlx-setup.md) — Set up MLX for native Apple silicon performance

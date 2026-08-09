@@ -139,7 +139,7 @@ main() {
     local swap_kb
     swap_kb="$(get_swap_used_kb)"
 
-    # If swap reading failed (returned 0), still log but don't act
+    # If swap reading failed (returned 0), still log but do not act
     if [ "${swap_kb}" -eq 0 ]; then
         log "INFO" "Swap check: unable to read swap usage — skipping"
         return 0

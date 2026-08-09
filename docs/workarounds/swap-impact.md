@@ -1,17 +1,17 @@
 # Swap Impact: The Hidden 30% Performance Tax
 
-> **TL;DR:** Stale swap from previous model runs costs 28–31% tok/s on small models — even when you have 40 GB of free RAM. macOS doesn't reclaim swap after models unload. The permanent fix: install **swap-guard** (a launchd agent that monitors swap and auto-purges). For one-off use: `sudo purge` before benchmarking, or `asimon clean --stop-ollama`.
+> **TL;DR:** Stale swap from previous model runs costs 28–31% tok/s on small models — even when you have 40 GB of free RAM. macOS does not reclaim swap after models unload. The permanent fix: install **swap-guard** (a launchd agent that monitors swap and auto-purges). For one-off use: `sudo purge` before benchmarking, or `asimon clean --stop-ollama`.
 
-## The Problem
+## The problem
 
-macOS swaps aggressively under memory pressure. When you load a model that pushes past available RAM, the system pages memory to disk. But here's the trap: **macOS does not reclaim swap after the model unloads**. That stale swap sits there, contaminating future inference sessions.
+macOS swaps aggressively under memory pressure. When you load a model that pushes past available RAM, the system pages memory to disk. But here is the trap: **macOS does not reclaim swap after the model unloads**. That stale swap sits there, contaminating future inference sessions.
 
-LLM inference reads model weights sequentially from unified memory. When swap forces those reads to hit the SSD instead of RAM, throughput collapses. The model isn't running out of memory — it's running out of *fast* memory.
+LLM inference reads model weights sequentially from unified memory. When swap forces those reads to hit the SSD instead of RAM, throughput collapses. The model is not running out of memory — it is running out of *fast* memory.
 
 !!! warning "Swap ≠ Out-of-Memory"
     You can have 40 GB of free RAM and still lose 30% tok/s if 2.5 GB of stale swap sits between the model and clean memory. Swap is a performance tax, not a capacity indicator.
 
-## My Evidence
+## My evidence
 
 Tested on **M1 Max 64 GB** (August 2026) with controlled clean vs. dirty baselines:
 
@@ -21,18 +21,18 @@ Tested on **M1 Max 64 GB** (August 2026) with controlled clean vs. dirty baselin
 | `gemma4:12b-nvfp4` | ~7.2 GB | 24.5 tok/s | 19.2 tok/s | **+28%** |
 | `gemma4:26b-mlx` | ~15.6 GB | 41.4 tok/s | 39.7 tok/s | **+4%** |
 
-**Clean baseline:** 47 GB available, 553 MB swap, `purge` between models.  
+**Clean baseline:** 47 GB available, 553 MB swap, `purge` between models.
 **Dirty baseline:** 27 GB available, 2.5 GB swap, stale swap from prior runs, no purge.
 
-The pattern is clear: small models lose 28–31% throughput. Large models that fill most of RAM anyway are less affected — they're already fighting for every byte.
+The pattern is clear: small models lose 28–31% throughput. Large models that fill most of RAM anyway are less affected — they are already fighting for every byte.
 
-## Why It Happens
+## Why it happens
 
-Apple Silicon's unified memory architecture means the CPU, GPU, and Neural Engine all share the same physical RAM. When a model loads, its weights occupy a contiguous block of this shared memory. When the model unloads, the memory is freed — but macOS's VM subsystem may have already paged some of those pages to disk during the model's lifetime, and **it doesn't proactively page them back in**.
+Apple Silicon unified memory architecture means the CPU, GPU, and Neural Engine all share the same physical RAM. When a model loads, its weights occupy a contiguous block of this shared memory. When the model unloads, the memory is freed — but macOS's VM subsystem may have already paged some of those pages to disk during the model's lifetime, and **it does not proactively page them back in**.
 
 The result: even after the model is gone, swap usage stays elevated. When you load the next model, some of its memory reads hit the swap file instead of RAM. The SSD (even a fast one) is 10–50× slower than unified memory for the random-access patterns LLM inference generates.
 
-## The Swap Tax Table
+## The swap tax table
 
 | Model Size | Swap Impact | Why |
 |-----------|-------------|-----|
@@ -42,7 +42,7 @@ The result: even after the model is gone, swap usage stays elevated. When you lo
 
 Small models are hit hardest because they have the most to gain from clean memory. A 4.9 GB model like `hermes3:8b` fits easily in 64 GB of RAM — but if 2.5 GB of that RAM is backed by stale swap pages, the model's sequential weight reads hit the disk 30% of the time.
 
-## How to Detect Swap Impact
+## How to detect swap impact
 
 ### Quick Check
 
@@ -50,7 +50,7 @@ Small models are hit hardest because they have the most to gain from clean memor
 sysctl vm.swapusage
 ```
 
-Look for `total = X.XX GB`. If it's above 1 GB and you haven't intentionally loaded a large model, you have stale swap.
+Look for `total = X.XX GB`. If it is above 1 GB and you have not intentionally loaded a large model, you have stale swap.
 
 ### System Memory Pressure
 
@@ -76,7 +76,7 @@ ps aux | grep ollama | awk '{print $6}'
 
 Shows the RSS (resident set size) of Ollama processes. If RSS is significantly smaller than the model size, parts of the model are swapped out.
 
-## Solutions (Ranked)
+## Solutions (ranked)
 
 ### 1. swap-guard (Automated Watchdog) — Recommended
 
@@ -120,13 +120,7 @@ See the [Quantization Guide](../benchmarks/quantization.md) for detailed compari
 
 ### 4. Reduce App Memory
 
-Reference numbers for 64 GB machines:
-
-- Chrome (20+ tabs): 2–4 GB
-- VS Code + extensions: 1–2 GB
-- Slack/Discord/Teams: 0.5–1 GB each
-
-Every GB freed reduces swap pressure.
+Memory pressure from other applications reduces available GPU memory — benchmark results reflect a clean system.
 
 ### 5. Use KEEP_ALIVE=0s
 
@@ -140,7 +134,7 @@ See the [Memory Management Guide](../guides/memory-management.md#keep_alive0s-fo
 
 ### 6. Reduce Context Length
 
-Longer context means larger KV cache, which means more memory pressure. If you don't need 128K context, don't use it:
+Longer context means larger KV cache, which means more memory pressure. If you do not need 128K context, do not use it:
 
 ```bash
 # For a quick benchmark, use a short context
@@ -164,14 +158,14 @@ Or use macmon in live mode for a richer view:
 macmon
 ```
 
-## Automated Solution: swap-guard
+## Automated solution: swap-guard
 
 !!! tip "Automated swap management"
     swap-guard monitors swap every 60 seconds and auto-purges when stale swap exceeds 1 GB. No manual `sudo purge` needed.
 
 ### The Problem with Manual Purge
 
-`sudo purge` works — but you have to remember to run it. If you load a model, do some work, load another model later, the stale swap from the first session is still there. You lose 30% tok/s and don't even notice because the system isn't crashing — it's just slow.
+`sudo purge` works — but it requires manual execution. If you load a model, do some work, load another model later, the stale swap from the first session is still there. You lose 30% tok/s and do not even notice because the system is not crashing — it is just slow.
 
 swap-guard solves this by running as a **launchd agent** that checks swap every 60 seconds and purges automatically when stale swap exceeds a threshold.
 
@@ -225,20 +219,20 @@ This removes the launchd agent, the script, the sudoers entry, and the log files
 The scripts live in the repo at `scripts/`:
 
 - [`swap-guard.sh`](https://github.com/j3n0v4/apple-silicon-llm-guide/blob/main/scripts/swap-guard.sh) — The watchdog script
-- [`com.vltx.swap-guard.plist`](https://github.com/j3n0v4/apple-silicon-llm-guide/blob/main/scripts/com.vltx.swap-guard.plist) — The launchd plist
+- [`com.local.swap-guard.plist`](https://github.com/j3n0v4/apple-silicon-llm-guide/blob/main/scripts/com.local.swap-guard.plist) — The launchd plist
 - [`install-swap-guard.sh`](https://github.com/j3n0v4/apple-silicon-llm-guide/blob/main/scripts/install-swap-guard.sh) — The installer
 
-## Key Insight
+## Key insight
 
-**Swap is not the same as out-of-memory.** You can have 40 GB of free RAM and still lose 30% tok/s if 2.5 GB of stale swap sits between the model and clean memory. The system isn't crashing — it's just silently paying a performance tax on every weight read.
+**Swap is not the same as out-of-memory.** You can have 40 GB of free RAM and still lose 30% tok/s if 2.5 GB of stale swap sits between the model and clean memory. The system is not crashing — it is just silently paying a performance tax on every weight read.
 
-The fix is trivial: `sudo purge` before your session. Don't let stale swap from yesterday's model run ruin today's benchmarks.
+The fix is trivial: `sudo purge` before your session. Stale swap from yesterday's model run can ruin today's benchmarks.
 
-## Test Hardware
+## Test hardware
 
 All measurements on **M1 Max, 64 GB RAM, macOS 26.6**. Results scale to other M-series chips proportionally by memory bandwidth. See the [Benchmark Methodology](../benchmarks/methodology.md) for the complete hardware configuration.
 
-## Related Pages
+## Related pages
 
 - [Memory Management Guide](../guides/memory-management.md) — Unified memory, KV cache, KEEP_ALIVE
 - [Quantization Guide](../benchmarks/quantization.md) — Reduce model footprint with quantization

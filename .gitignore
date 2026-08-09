@@ -31,3 +31,10 @@ Thumbs.db
 # Build artifacts
 *.tar.gz
 *.whl
+
+# Secrets
+.webui_secret_key
+
+# Agent / backup
+.hermes/
+*.backup

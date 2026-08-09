@@ -1,10 +1,10 @@
 # Benchmark Methodology
 
-This page documents how all benchmarks in this guide were conducted — the test battery, measurement approach, hardware configuration, and scripts used. Follow these instructions to reproduce the results on your own machine.
+This page documents how all benchmarks in this project were conducted — the test battery, measurement approach, hardware configuration, and scripts used. Follow these instructions to reproduce the results on your own machine.
 
 > **Verified on:** MacBook Pro M1 Max (64 GB), macOS 26.6 (Tahoe).
 
-## Hardware Configuration
+## Hardware configuration
 
 ### Test Machine
 
@@ -30,7 +30,7 @@ This page documents how all benchmarks in this guide were conducted — the test
 | oMLX | 0.2.x |
 | Python | 3.12.x |
 
-## Measurement Approach
+## Measurement approach
 
 ### Throughput Measurement
 
@@ -86,7 +86,7 @@ Cold start is measured as `first_token_time - request_start_time` in the script 
 
 Effective throughput accounts for **all tokens** (prefill + generation) divided by total wall time:
 
-```
+```text
 effective_throughput = (prompt_tokens + generated_tokens) / total_time
 ```
 
@@ -115,13 +115,13 @@ Perplexity is measured on a held-out validation set of 1,000 documents (not seen
 mlx_lm.perplexity --model model-path --data validation_set.txt
 ```
 
-## Test Battery
+## Test battery
 
 ### Standard Test Prompt
 
 All throughput benchmarks use a standardized prompt:
 
-```
+```text
 You are a helpful assistant. Please provide a detailed response to the following:
 
 [2,000 tokens of structured context — technical documentation, code snippets, and natural language]
@@ -147,7 +147,7 @@ Each test is run **5 times** and the **median** value is reported. This mitigate
 - Memory pressure from other applications
 - First-run vs cached model loading
 
-## Test Scripts
+## Test scripts
 
 The full benchmark suite script is available in the project repository. Key measurement functions:
 
@@ -265,7 +265,7 @@ for name, config in engines.items():
 print(json.dumps(results, indent=2))
 ```
 
-## Memory Measurement
+## Memory measurement
 
 ### KV Cache Size
 
@@ -288,11 +288,11 @@ ps aux | grep ollama | awk '{print $6}'  # RSS in KB
 
 Total memory budget = model file size (on disk) + KV cache (at target context length) + ~5% overhead for runtime structures.
 
-## Reproducibility Notes
+## Reproducibility notes
 
 ### Factors That Affect Results
 
-1. **Thermal state:** A cold machine shows different results than one that's been running for hours. The M1 Max laptop maintains consistent performance under sustained load.
+1. **Thermal state:** A cold machine shows different results than one that has been running for hours. The M1 Max laptop maintains consistent performance under sustained load.
 2. **Background processes:** Close browsers, IDEs, and other memory-intensive applications before benchmarking.
 3. **Model cache:** Ollama caches loaded models. First request after a restart includes model loading time; subsequent requests skip it.
 4. **Prompt structure:** Different prompts of the same length can have different prefill times due to attention pattern differences.
@@ -311,6 +311,6 @@ ollama stop gemma4:e4b-nvfp4
 memory_pressure
 ```
 
-## Data Collection Date
+## Data collection date
 
-All benchmarks in this guide were collected on **August 1, 2026**. Results differ with newer software versions, model updates, or different hardware configurations.
+All benchmarks in this project were collected on **August 1, 2026**. Results differ with newer software versions, model updates, or different hardware configurations.

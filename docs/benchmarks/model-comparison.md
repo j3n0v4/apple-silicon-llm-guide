@@ -2,14 +2,14 @@
 
 Benchmark data for all models tested on the MacBook Pro M1 Max (64 GB) — see the [Methodology](methodology.md) page for hardware configuration and measurement approach. Measurements were taken via `/api/generate` (raw generation endpoint) unless otherwise noted.
 
-## Quick Reference Table
+## Quick reference table
 
 | Model | Throughput | Quality | Disk Size | KV Cache (128K) | Cold Start | RAM Budget |
 |-------|-----------|---------|-----------|-----------------|------------|------------|
 | gemma4:e2b-nvfp4 | **93.1 tok/s** | 9/10 | 6.5 GB | ~0.3 GB | **1.51s** | ~6.8 GB |
 | gemma4:e4b-mxfp8 | 63.0 tok/s | 8/10 | 11 GB | ~0.5 GB | 3.0s | ~11.5 GB |
 | gemma4:e4b-nvfp4 | 60.4 tok/s | 8/10 | 8.8 GB | ~0.5 GB | 2.0s | ~9.3 GB |
-| qwen3-coder:30b | 55.7 tok/s | **10/10** | 18 GB | 3.0 GB | 7.8s | ~21 GB |
+| qwen3-coder:30b | 55.7 tok/s | **10/10** | 18 GB | 15.2 GB | 7.8s | ~33 GB |
 | qwen3.6:35b-a3b-nvfp4 | 54.3 tok/s | 9/10 | 21 GB | 1.25 GB | 5.0s | ~22 GB |
 | qwen3.6:35b-a3b-coding-nvfp4 | 53.9 tok/s | **10/10** | 21.9 GB | 1.25 GB | 2.68s | ~23 GB |
 | gemma4:26b-nvfp4 | 52.8 tok/s | 9/10 | 17 GB | 1.92 GB | 3.4s | ~19 GB |
@@ -24,19 +24,11 @@ Benchmark data for all models tested on the MacBook Pro M1 Max (64 GB) — see t
     - **RAM Budget:** Total memory required (model + KV cache + overhead). Must fit in your available RAM.
     - **Cold Start:** Time from request to first token (includes model load if not cached).
 
-## Throughput Comparison
-
-![Throughput by Model](../assets/images/throughput-by-model.svg)
-
-## Throughput vs Quality
-
-![Throughput vs Quality Scatter Plot](../assets/images/throughput-vs-quality.svg)
-
-## Model Profiles
+## Model profiles
 
 ### Gemma 4 Family
 
-Google's Gemma 4 models are the standout performers on Apple Silicon, thanks to their efficient architecture and excellent MLX quantization support.
+Google's Gemma 4 models are the standout performers on Apple silicon, thanks to their efficient architecture and excellent MLX quantization support.
 
 | Model | Best For | Why |
 |-------|----------|-----|
@@ -62,13 +54,8 @@ Alibaba's Qwen models offer strong performance, especially for coding and struct
 |-------|----------|-----|
 | deepseek-r1:14b | **Reasoning / thinking** | 10/10 quality with chain-of-thought reasoning. Slowest at 22.2 tok/s and massive KV cache (40 GB at 128K). |
 
-## Memory Budget Breakdown
+## Cold start comparison
 
-![Model Memory Distribution](../assets/images/model-memory-distribution.svg)
-
-## Cold Start Comparison
-
-![Cold Start Comparison](../assets/images/cold-start-comparison.svg)
 
 Cold start time is the delay from sending a request to receiving the first token. This includes model loading (if not cached in memory), prompt processing, and prefill.
 
@@ -84,7 +71,7 @@ Cold start time is the delay from sending a request to receiving the first token
 | qwen3.6:35b-a3b-nvfp4 | 5.0s | |
 | qwen3-coder:30b | 7.8s | Largest dense model — slowest cold start |
 
-## API Overhead
+## API overhead
 
 All measurements above use `/api/generate` (raw generation endpoint). Using `/v1/chat/completions` (OpenAI-compatible chat endpoint) adds **33–37% overhead** to generation time:
 
@@ -93,9 +80,9 @@ All measurements above use `/api/generate` (raw generation endpoint). Using `/v1
 | `/api/generate` | 60.4 tok/s | — |
 | `/v1/chat/completions` | ~40 tok/s | ~33% slower |
 
-This overhead comes from chat template processing, token counting, and response formatting. For maximum throughput, prefer `/api/generate` when your workflow doesn't need chat formatting.
+This overhead comes from chat template processing, token counting, and response formatting. For maximum throughput, prefer `/api/generate` when your workflow does not need chat formatting.
 
-## Recommendations by Use Case
+## Recommendations by use case
 
 | Use Case | Recommended Model | Why |
 |----------|-----------------|-----|

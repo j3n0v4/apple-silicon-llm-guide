@@ -1,6 +1,6 @@
 # Getting Started
 
-Run your first LLM on Apple Silicon in under five minutes.
+Run your first LLM on Apple silicon in under five minutes.
 
 ---
 
@@ -63,14 +63,14 @@ omlx serve --model mlx-community/gemma-4-26b-it-4bit --port 8000
 
 See the [MLX Setup Guide](guides/mlx-setup.md) for engine comparison, PYTHONPATH fix, and macOS troubleshooting.
 
-## Verification Checklist
+## Verification checklist
 
 - [ ] **Ollama is running**: `curl http://localhost:11434/api/tags` returns JSON
 - [ ] **Model responds**: `ollama run gemma4:26b-nvfp4 "Hi"` generates text
 - [ ] **Open WebUI loads**: `http://localhost:8080` shows the chat interface
 - [ ] **Metal acceleration**: GPU utilization visible in Activity Monitor during inference
 
-## Next Steps
+## Next steps
 
 - **[Benchmarks](benchmarks/index.md)** — See how your hardware compares
 - **[Ollama Setup Guide](guides/ollama-setup.md)** — Env vars, dual-stack, troubleshooting

@@ -1,16 +1,16 @@
 # MLX Setup Guide
 
-[MLX](https://github.com/ml-explore/mlx) is Apple's machine learning framework for Apple Silicon. Unlike Ollama's dual-stack approach, MLX runs natively on Metal with no translation layer — it speaks directly to the GPU through Apple's Metal Performance Shaders.
+[MLX](https://github.com/ml-explore/mlx) is Apple's machine learning framework for Apple silicon. Unlike Ollama's dual-stack approach, MLX runs natively on Metal with no translation layer — it speaks directly to the GPU through Apple's Metal Performance Shaders.
 
 > **Basic installation, model downloading, serving, and API usage are covered by the mlx-lm README.**
-> This guide only covers what's **different or specific to Apple Silicon**.
+> This page only covers what is **different or specific to Apple silicon**.
 
 - **Installation**: See the [mlx-lm README](https://github.com/ml-explore/mlx-lm) for `pip install mlx mlx-lm`.
 - **Downloading models**: MLX models are on HuggingFace at [mlx-community](https://huggingface.co/mlx-community). Use `huggingface-cli download` or let `mlx_lm` auto-download.
 - **Serving**: See the mlx-lm README for `python -m mlx_lm.server` usage.
 - **OpenAI-compatible API**: All MLX servers expose `/v1/chat/completions` — see the mlx-lm README for curl and Python SDK examples.
 
-## PYTHONPATH Contamination Fix
+## PYTHONPATH contamination fix
 
 MLX servers can suffer from `PYTHONPATH` contamination — environment variables from your shell leaking into the server process and causing import conflicts or unexpected behavior.
 
@@ -69,7 +69,7 @@ chmod +x ~/mlx-serve.sh
 </plist>
 ```
 
-## Performance Comparison Between Engines
+## Performance comparison between engines
 
 | Engine | Startup Time | Throughput | Memory Usage | Tool Calling |
 |--------|-------------|-----------|-------------|-------------|
@@ -105,7 +105,7 @@ pip install mlx mlx-lm --no-cache-dir
 ### Metal device not found
 
 ```bash
-# Verify Apple Silicon
+# Verify Apple silicon
 sysctl -n machdep.cpu.brand_string
 
 # Check Metal support
@@ -136,7 +136,7 @@ curl http://localhost:8000/v1/models
 memory_pressure
 ```
 
-## Next Steps
+## Next steps
 
 - [Open WebUI](open-webui.md) — Connect MLX servers to a web interface
 - [Memory Management](memory-management.md) — Understanding unified memory limits

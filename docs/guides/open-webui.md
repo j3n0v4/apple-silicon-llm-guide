@@ -3,7 +3,7 @@
 [Open WebUI](https://github.com/open-webui/open-webui) is a self-hosted web interface for LLMs. It connects to Ollama and MLX servers, providing a ChatGPT-like experience for your local models.
 
 > **Basic installation, starting the server, and UI usage are covered by the Open WebUI docs.**
-> This guide only covers what's **different or specific to Apple Silicon**.
+> This page only covers what is **different or specific to Apple silicon**.
 
 - **Installation**: See the [Open WebUI README](https://github.com/open-webui/open-webui) for `pip install open-webui` or Docker install.
 - **Starting the server**: `open-webui serve --port 8080` — see the README for options.
@@ -39,7 +39,7 @@ MLX servers expose an OpenAI-compatible API, so Open WebUI connects to them as a
 
 The prefix helps distinguish models from different providers in the model selector.
 
-## Tool Calling Configuration (MLX-Specific Patches)
+## Tool calling configuration (MLX-specific patches)
 
 Open WebUI supports tool calling (function calling) with compatible models. MLX/Rapid-MLX servers require several patches to work correctly.
 
@@ -92,7 +92,7 @@ if "tool_calls" in choice["delta"]:
 
 ### 5. API Keys
 
-While MLX servers don't require API keys, Open WebUI enforces one. Set a dummy key:
+While MLX servers do not require API keys, Open WebUI enforces one. Set a dummy key:
 
 ```bash
 # In Open WebUI settings, set API key to "not-needed" or "«redacted:sk-…»"
@@ -108,14 +108,14 @@ MLX models need a specific chat template. Configure in Open WebUI:
 
 Example for Gemma 4:
 
-```
+```text
 <start_of_turn>user
 {{prompt}}
 <end_of_turn>
 <start_of_turn>model
 ```
 
-## Next Steps
+## Next steps
 
 - [Ollama Setup](ollama-setup.md) — Setting up the Ollama backend
 - [MLX Setup](mlx-setup.md) — Setting up MLX backends

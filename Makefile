@@ -1,4 +1,4 @@
-.PHONY: serve build deploy clean install lint
+.PHONY: serve build deploy clean install lint rebuild
 
 # Variables
 SITE_DIR = site
@@ -6,7 +6,7 @@ DOCS_DIR = docs
 
 # Install dependencies
 install:
-	pip install -e ".[dev]"
+	python -m pip install -e ".[dev]"
 
 # Serve locally with live reload
 serve:

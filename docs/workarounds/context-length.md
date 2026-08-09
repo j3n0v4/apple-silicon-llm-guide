@@ -1,6 +1,6 @@
 # The `context_length` Footgun
 
-## The Problem
+## The problem
 
 Setting `model.context_length` globally in your Ollama config (`config.yaml`) is a trap. It applies to **every model** you load — silently clipping their context windows.
 
@@ -10,9 +10,9 @@ model:
   context_length: 8192  # This clips ALL models!
 ```
 
-If you set this to 8192 and then use a model with a 128K context window, you've just cut its effective context by 93%. The model will truncate inputs beyond 8192 tokens without warning.
+If you set this to 8192 and then use a model with a 128K context window, you have just cut its effective context by 93%. The model will truncate inputs beyond 8192 tokens without warning.
 
-## The Fix: Per-Model Override
+## The fix: per-model override
 
 Use `custom_providers` to set context length per-model instead:
 
@@ -36,7 +36,7 @@ custom_providers:
         context_length: 131072
 ```
 
-## Checking Current Context Length
+## Checking current context length
 
 Use `ollama show` to see a model's configured context window:
 
@@ -44,9 +44,9 @@ Use `ollama show` to see a model's configured context window:
 ollama show gemma4:26b-nvfp4
 ```
 
-Look for the `context length` field in the output. If it's lower than expected, check your config for a global `context_length` setting.
+Look for the `context length` field in the output. If it is lower than expected, check your config for a global `context_length` setting.
 
-## Model Context Windows
+## Model context windows
 
 | Model | Native Context | Notes |
 |-------|---------------|-------|
@@ -57,23 +57,23 @@ Look for the `context length` field in the output. If it's lower than expected, 
 | `qwen3.6:35b-a3b-nvfp4` | 131,072 tokens | General purpose |
 | `llama3.3:70b` | 131,072 tokens | Large general model |
 
-## KV Cache Memory Impact
+## KV cache memory impact
 
 Context length directly determines VRAM consumption through the KV cache. On Apple Silicon with unified memory, this matters:
 
-| Context Length | Approx KV Cache (7B model) | Approx KV Cache (30B model) |
+| Context Length | Approx KV Cache (7B model) | Approx KV Cache (30B coder) |
 |---------------|---------------------------|----------------------------|
-| 8,192 | ~1 GB | ~4 GB |
-| 32,768 | ~4 GB | ~16 GB |
-| 131,072 | ~16 GB | ~64 GB |
-| 262,144 | ~32 GB | ~128 GB |
+| 8,192 | ~1 GB | ~1.0 GB |
+| 32,768 | ~4 GB | ~3.8 GB |
+| 131,072 | ~16 GB | ~15.2 GB |
+| 262,144 | ~32 GB | ~30.4 GB |
 
 **M1 Max 64GB practical limits:**
 - 7B models: up to ~131K context comfortably
 - 30B models: up to ~32K context before memory pressure
 - 70B models: 8K-16K context max
 
-## How to Diagnose a Clipped Context
+## How to diagnose a clipped context
 
 If your model seems to "forget" earlier parts of a long conversation:
 
@@ -92,10 +92,10 @@ while true; do
 done
 ```
 
-## Best Practices
+## Best practices
 
 1. **Never set `model.context_length` globally** — always use per-model overrides
-2. **Match context to your use case** — don't set 262K for a simple chat bot; you'll waste memory
+2. **Match context to your use case** — avoid setting 262K for a simple chat bot; you will waste memory
 3. **Monitor memory pressure** — if you see yellow/red pressure, reduce context length
 4. **Consider the model size** — a 70B model at 131K context needs ~64GB just for KV cache
 5. **Restart Ollama after config changes** — `launchctl kickstart gui/$(id -u)/ollama` or restart the app

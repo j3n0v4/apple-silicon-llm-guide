@@ -1,12 +1,12 @@
 # The `/no_think` Bug: Empty Content on OpenAI-Compatible API
 
-## The Problem
+## The problem
 
 When using the `/no_think` suffix in model tags with Ollama's OpenAI-compatible API endpoint (`/v1/chat/completions`), the response contains **empty content** — the thinking block is suppressed, but so is the actual response text.
 
 This bug directly inflated every v4 benchmark score. Models like Gemma4, Qwen3.6, and DeepSeek-R1 were tested with `/no_think` to suppress chain-of-thought output during evaluation. The assumption was that `/no_think` only strips the thinking trace. In reality, it also strips the content field, producing an empty response that benchmark harnesses interpreted as a zero-cost correct answer.
 
-## Affected Models
+## Affected models
 
 All thinking models that support the `/no_think` suffix are affected:
 
@@ -17,7 +17,7 @@ All thinking models that support the `/no_think` suffix are affected:
 | Qwen3.6 | `qwen3.6:35b-a3b-nvfp4` | Broken with `/no_think` |
 | DeepSeek-R1 | `deepseek-r1:14b` | Broken with `/no_think` |
 
-## The Fix: Use `reasoning_effort` Instead
+## The fix: use `reasoning_effort` instead
 
 The correct approach is to set `reasoning_effort` in the request body rather than using the `/no_think` model tag suffix.
 
@@ -70,7 +70,7 @@ curl -X POST http://localhost:11434/v1/chat/completions \
 }
 ```
 
-## DeepSeek-R1 Special Case
+## DeepSeek-R1 special case
 
 DeepSeek-R1 has an additional quirk: `reasoning_effort=none` also produces empty content. You must use `reasoning_effort=low` instead.
 
@@ -85,7 +85,7 @@ curl -X POST http://localhost:11434/v1/chat/completions \
   }'
 ```
 
-## Python SDK Example
+## Python SDK example
 
 ```python
 import openai
@@ -108,7 +108,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)  # Actual response
 ```
 
-## Why This Happens
+## Why this happens
 
 The `/no_think` suffix is a Ollama-specific model tag modifier that tells the inference engine to strip thinking tokens from the output. On the native Ollama API (`/api/generate` and `/api/chat`), this works correctly — thinking is removed, content is preserved. However, on the OpenAI-compatible endpoint (`/v1/chat/completions`), the implementation has a bug where suppressing the thinking block also suppresses the content generation entirely.
 
@@ -116,7 +116,7 @@ The `reasoning_effort` parameter, on the other hand, is part of the OpenAI API s
 
 ## Verification
 
-To verify you're getting real content:
+To verify you are getting real content:
 
 ```bash
 # Check that content is non-empty
