@@ -83,7 +83,6 @@ Read the full guide at [j3n0v4.github.io/apple-silicon-llm-guide](https://j3n0v4
 | **gemma4:e4b-nvfp4** | Best value — balanced general use | 60.4 tok/s | 8/10 | ~9.3 GB |
 | **qwen3.6:35b-a3b-nvfp4** | Most efficient — MoE, 3B active params | 54.3 tok/s | 9/10 | ~22 GB |
 | **deepseek-r1:14b** | Deep reasoning / chain-of-thought | 22.2 tok/s | **10/10** | ~49 GB |
-| **Best overall** | `gemma4:e4b-nvfp4` | 60.4 tok/s, 8/10 quality, only 9.3 GB RAM |
 
 ---
 
